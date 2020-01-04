@@ -11,6 +11,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 object NetworkConstants {
     const val BASE_URL = "https://api.themoviedb.org/"
     const val API_KEY = "459e450632dfc0e39bfcc76eff02e6c4"
+    const val IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w185"
 }
 
 private val moshi = Moshi.Builder()
