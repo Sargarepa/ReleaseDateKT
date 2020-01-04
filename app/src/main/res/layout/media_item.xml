@@ -2,6 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        <variable
+            name="movie"
+            type="com.example.android.releasedatekt.domain.Movie" />
+        
+        <variable
+            name="callback"
+            type="com.example.android.releasedatekt.ui.MovieClickListener" />
+    </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -19,6 +29,7 @@
                 android:id="@+id/poster"
                 android:layout_width="112dp"
                 android:layout_height="196dp"
+                app:imageUrl="@{movie.fullImageUrl}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -31,11 +42,12 @@
                 android:layout_marginStart="@dimen/dimen_small"
                 android:layout_marginEnd="@dimen/dimen_small"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:text="@{movie.title}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/poster"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Bojack Horseman S06E01" />
-
+            <!-- TODO: Change to actual genres instead of IDs -->
             <TextView
                 android:id="@+id/genre"
                 android:layout_width="0dp"
@@ -43,6 +55,7 @@
                 android:layout_marginStart="@dimen/dimen_small"
                 android:layout_marginTop="@dimen/dimen_small"
                 android:layout_marginEnd="@dimen/dimen_small"
+                android:text="@{movie.genreIds}"
                 tools:text="Drama, Comedy"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/poster"
@@ -55,11 +68,23 @@
                 android:layout_marginStart="@dimen/dimen_small"
                 android:layout_marginTop="@dimen/dimen_small"
                 android:layout_marginEnd="@dimen/dimen_small"
+                android:text="@{movie.shortOverview}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/poster"
                 app:layout_constraintTop_toBottomOf="@+id/genre"
                 tools:text="@string/placeholder_text" />
+
+            <View
+                android:id="@+id/clickableOverlay"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="?attr/selectableItemBackground"
+                android:onClick="@{() -> callback.onClick(movie)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

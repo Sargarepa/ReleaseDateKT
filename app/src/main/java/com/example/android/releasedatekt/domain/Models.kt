@@ -1,5 +1,6 @@
 package com.example.android.releasedatekt.domain
 
+import com.example.android.releasedatekt.network.NetworkConstants.IMAGE_BASE_URL
 import com.example.android.releasedatekt.util.smartTruncate
 import java.util.*
 
@@ -18,4 +19,7 @@ data class Movie(
     //Truncated overview to be displayed in UI if the overview is too long
     val shortOverview: String
         get() = overview.smartTruncate(200)
+
+    val fullImageUrl: String
+        get() = IMAGE_BASE_URL + posterPath
 }
