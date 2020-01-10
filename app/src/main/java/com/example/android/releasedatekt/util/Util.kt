@@ -1,5 +1,8 @@
 package com.example.android.releasedatekt.util
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 private val PUNCTUATION = listOf(", ", "; ", ": ", " ")
 
 /**
@@ -30,4 +33,10 @@ fun String.smartTruncate(length: Int): String {
         builder.append("...")
     }
     return builder.toString()
+}
+
+object DateUtil {
+    const val SERVER_FORMAT = "yyyy-MM-dd"
+
+    val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.US)
 }

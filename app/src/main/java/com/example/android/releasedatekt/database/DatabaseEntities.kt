@@ -3,6 +3,7 @@ package com.example.android.releasedatekt.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.android.releasedatekt.domain.Movie
+import com.example.android.releasedatekt.util.DateUtil.dateFormat
 import java.util.*
 
 @Entity
@@ -17,7 +18,7 @@ data class DatabaseMovie constructor(
     val genreIds: List<Int>,
     val voteAverage: Float,
     val overview: String,
-    val releaseDate: Date
+    val releaseDate: Long
 )
 
 fun List<DatabaseMovie>.asDomainModel(): List<Movie> {
@@ -32,7 +33,7 @@ fun List<DatabaseMovie>.asDomainModel(): List<Movie> {
             genreIds = it.genreIds,
             voteAverage = it.voteAverage,
             overview = it.overview,
-            releaseDate = it.releaseDate
+            releaseDate = Date(it.releaseDate)
         )
     }
 }
