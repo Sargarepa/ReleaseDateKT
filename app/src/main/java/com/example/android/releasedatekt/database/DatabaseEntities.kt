@@ -10,7 +10,7 @@ import java.util.*
 data class DatabaseMovie constructor(
     @PrimaryKey
     val id: Int,
-    val popularity: Int,
+    val popularity: Float,
     val voteCount: Int,
     val posterPath: String,
     val language: String,

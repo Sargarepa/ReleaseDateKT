@@ -13,7 +13,7 @@ interface MediaDao {
     fun insertAll(vararg movies: DatabaseMovie)
 }
 
-@Database(entities = [DatabaseMovie::class], version = 1)
+@Database(entities = [DatabaseMovie::class], version = 2)
 @TypeConverters(Converters::class)
 abstract class MediaDatabase : RoomDatabase() {
     abstract val mediaDao: MediaDao
@@ -28,7 +28,9 @@ fun getDatabase(context: Context): MediaDatabase {
                 context,
                 MediaDatabase::class.java,
                 "media"
-            ).build()
+            )
+                .fallbackToDestructiveMigration()
+                .build()
         }
     }
     return INSTANCE

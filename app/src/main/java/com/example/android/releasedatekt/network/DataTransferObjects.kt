@@ -2,6 +2,7 @@ package com.example.android.releasedatekt.network
 
 import com.example.android.releasedatekt.database.DatabaseMovie
 import com.example.android.releasedatekt.domain.Movie
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.util.*
 
@@ -11,15 +12,15 @@ data class NetworkMovieContainer(val results: List<NetworkMovie>)
 @JsonClass(generateAdapter = true)
 data class NetworkMovie(
     val id: Int,
-    val popularity: Int,
-    val voteCount: Int,
-    val posterPath: String,
-    val language: String,
+    val popularity: Float,
+    @Json(name = "vote_count") val voteCount: Int,
+    @Json(name = "poster_path") val posterPath: String,
+    @Json(name = "original_language") val language: String,
     val title: String,
-    val genreIds: List<Int>,
-    val voteAverage: Float,
+    @Json(name = "genre_ids") val genreIds: List<Int>,
+    @Json(name = "vote_average") val voteAverage: Float,
     val overview: String,
-    val releaseDate: Date
+    @Json(name = "release_date") val releaseDate: Date
 )
 
 fun NetworkMovieContainer.asDomainModel(): List<Movie> {
