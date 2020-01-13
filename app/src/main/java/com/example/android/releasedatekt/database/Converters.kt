@@ -6,6 +6,7 @@ import java.util.*
 object Converters {
 
     @TypeConverter
+    @JvmStatic
     fun intListToString(integers: List<Int>?): String {
         var result = ""
         integers?.let {
@@ -20,6 +21,7 @@ object Converters {
     }
 
     @TypeConverter
+    @JvmStatic
     fun stringToIntList(string: String?): List<Int> {
         var result = mutableListOf<Int>()
         string?.let {
@@ -32,6 +34,7 @@ object Converters {
     }
 
     @TypeConverter
+    @JvmStatic
     fun dateToLong(date: Date?): Long {
 
         return date?.time ?: 0
@@ -39,6 +42,7 @@ object Converters {
     }
 
     @TypeConverter
+    @JvmStatic
     fun longToDate(long: Long): Date {
         return Date(long)
     }

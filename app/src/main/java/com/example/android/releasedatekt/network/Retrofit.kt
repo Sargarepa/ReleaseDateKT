@@ -16,7 +16,7 @@ object NetworkConstants {
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
-    .add(DateAdapter)
+    .add(DateAdapter())
     .build()
 
 object Network {
