@@ -8,7 +8,7 @@ import com.example.android.releasedatekt.network.NetworkConstants.IMAGE_BASE_URL
 
 @BindingAdapter("goneIfNotNull")
 fun goneIfNotNull(view: View, it: Any?) {
-    view.visibility = if (it == null) View.GONE else View.VISIBLE
+    view.visibility = if (it != null) View.GONE else View.VISIBLE
 }
 
 @BindingAdapter("imageUrl")
