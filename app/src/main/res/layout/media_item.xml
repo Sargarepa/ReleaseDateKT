@@ -55,7 +55,7 @@
                 android:layout_marginStart="@dimen/dimen_small"
                 android:layout_marginTop="@dimen/dimen_small"
                 android:layout_marginEnd="@dimen/dimen_small"
-                android:text="@{movie.genreIds}"
+                android:text="@{movie.genreIds.toString()}"
                 tools:text="Drama, Comedy"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/poster"
