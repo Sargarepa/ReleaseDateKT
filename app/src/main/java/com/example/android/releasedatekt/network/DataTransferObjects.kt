@@ -1,6 +1,8 @@
 package com.example.android.releasedatekt.network
 
+import com.example.android.releasedatekt.database.DatabaseGenre
 import com.example.android.releasedatekt.database.DatabaseMovie
+import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -8,6 +10,9 @@ import java.util.*
 
 @JsonClass(generateAdapter = true)
 data class NetworkMovieContainer(val results: List<NetworkMovie>)
+
+@JsonClass(generateAdapter = true)
+data class NetworkGenreContainer(val genres: List<NetworkGenre>)
 
 @JsonClass(generateAdapter = true)
 data class NetworkMovie(
@@ -23,7 +28,13 @@ data class NetworkMovie(
     @Json(name = "release_date") val releaseDate: Date
 )
 
-fun NetworkMovieContainer.asDomainModel(): List<Movie> {
+@JsonClass(generateAdapter = true)
+data class NetworkGenre(
+    val id: Int,
+    val name: String
+)
+
+fun NetworkMovieContainer.asDomainModelMovies(): List<Movie> {
     return results.map {
         Movie(
             id = it.id,
@@ -40,7 +51,7 @@ fun NetworkMovieContainer.asDomainModel(): List<Movie> {
     }
 }
 
-fun NetworkMovieContainer.asDatabaseModel(): Array<DatabaseMovie> {
+fun NetworkMovieContainer.asDatabaseModelMovies(): Array<DatabaseMovie> {
     return results.map {
         DatabaseMovie(
             id = it.id,
@@ -53,6 +64,24 @@ fun NetworkMovieContainer.asDatabaseModel(): Array<DatabaseMovie> {
             voteAverage = it.voteAverage,
             overview = it.overview,
             releaseDate = it.releaseDate.time
+        )
+    }.toTypedArray()
+}
+
+fun NetworkGenreContainer.asDomainModelGenres(): List<Genre> {
+    return genres.map {
+        Genre(
+            id = it.id,
+            name = it.name
+        )
+    }
+}
+
+fun NetworkGenreContainer.asDatabaseModelGenres(): Array<DatabaseGenre> {
+    return genres.map {
+        DatabaseGenre(
+            id = it.id,
+            name = it.name
         )
     }.toTypedArray()
 }

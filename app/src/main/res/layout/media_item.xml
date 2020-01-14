@@ -4,13 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools">
     
     <data>
+
+        <import type="java.util.List"/>
+        <import type="com.example.android.releasedatekt.domain.Genre" />
+        <import type="com.example.android.releasedatekt.domain.Movie" />
+        <import type="com.example.android.releasedatekt.ui.MovieClickListener" />
+
         <variable
             name="movie"
-            type="com.example.android.releasedatekt.domain.Movie" />
+            type="Movie" />
         
         <variable
             name="callback"
-            type="com.example.android.releasedatekt.ui.MovieClickListener" />
+            type="MovieClickListener" />
+
+        <variable
+            name="genres"
+            type="List&lt;Genre>" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -55,7 +65,8 @@
                 android:layout_marginStart="@dimen/dimen_small"
                 android:layout_marginTop="@dimen/dimen_small"
                 android:layout_marginEnd="@dimen/dimen_small"
-                android:text="@{movie.genreIds.toString()}"
+                app:genreIds="@{movie.genreIds}"
+                app:genres="@{genres}"
                 tools:text="Drama, Comedy"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/poster"

@@ -9,11 +9,17 @@ interface MediaDao {
     @Query("select * from databasemovie")
     fun getAllMovies(): LiveData<List<DatabaseMovie>>
 
+    @Query("select * from databasegenre")
+    fun getAllGenres(): LiveData<List<DatabaseGenre>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg movies: DatabaseMovie)
+    fun insertAllMovies(vararg movies: DatabaseMovie)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllGenres(vararg genres: DatabaseGenre)
 }
 
-@Database(entities = [DatabaseMovie::class], version = 2)
+@Database(entities = arrayOf(DatabaseMovie::class, DatabaseGenre::class), version = 3)
 @TypeConverters(Converters::class)
 abstract class MediaDatabase : RoomDatabase() {
     abstract val mediaDao: MediaDao
