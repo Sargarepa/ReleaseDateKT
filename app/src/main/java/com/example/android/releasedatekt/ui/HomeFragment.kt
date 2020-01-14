@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.releasedatekt.R
 import com.example.android.releasedatekt.databinding.FragmentHomeBinding
 import com.example.android.releasedatekt.databinding.MediaItemBinding
+import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
 import com.example.android.releasedatekt.viewmodels.HomeViewModel
 
@@ -40,6 +41,12 @@ class HomeFragment : Fragment() {
         viewModel.movies.observe(this, Observer {movies ->
             movies?.apply {
                 viewModelAdapter?.movies = movies
+            }
+        })
+
+        viewModel.genres.observe(this, Observer {genres ->
+            genres?.apply {
+                viewModelAdapter?.genres = genres
             }
         })
     }
@@ -86,6 +93,13 @@ class HomeAdapter(val clickListener: MovieClickListener) : RecyclerView.Adapter<
             notifyDataSetChanged()
         }
 
+    var genres: List<Genre> = emptyList()
+        set(value) {
+            field = value
+
+            notifyDataSetChanged()
+        }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val viewDataBinding: MediaItemBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
@@ -102,6 +116,7 @@ class HomeAdapter(val clickListener: MovieClickListener) : RecyclerView.Adapter<
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.viewDataBinding.callback = clickListener
         holder.viewDataBinding.movie = movies[position]
+        holder.viewDataBinding.genres = genres
     }
 }
 

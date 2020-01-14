@@ -1,6 +1,7 @@
 package com.example.android.releasedatekt.network
 
 import com.example.android.releasedatekt.network.NetworkConstants.BASE_URL
+import com.example.android.releasedatekt.network.services.GenresService
 import com.example.android.releasedatekt.network.services.MoviesService
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
@@ -27,4 +28,5 @@ object Network {
         .build()
 
     val movies = retrofit.create(MoviesService::class.java)
+    val genres = retrofit.create(GenresService::class.java)
 }

@@ -2,8 +2,8 @@ package com.example.android.releasedatekt.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
-import com.example.android.releasedatekt.util.DateUtil.dateFormat
 import java.util.*
 
 @Entity
@@ -21,7 +21,14 @@ data class DatabaseMovie constructor(
     val releaseDate: Long
 )
 
-fun List<DatabaseMovie>.asDomainModel(): List<Movie> {
+@Entity
+data class DatabaseGenre constructor(
+    @PrimaryKey
+    val id: Int,
+    val name: String
+)
+
+fun List<DatabaseMovie>.asDomainModelMovies(): List<Movie> {
     return map {
         Movie(
             id = it.id,
@@ -34,6 +41,15 @@ fun List<DatabaseMovie>.asDomainModel(): List<Movie> {
             voteAverage = it.voteAverage,
             overview = it.overview,
             releaseDate = Date(it.releaseDate)
+        )
+    }
+}
+
+fun List<DatabaseGenre>.asDomainModelGenres(): List<Genre> {
+    return map {
+        Genre(
+            id = it.id,
+            name = it.name
         )
     }
 }

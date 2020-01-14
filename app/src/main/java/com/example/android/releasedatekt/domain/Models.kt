@@ -23,3 +23,8 @@ data class Movie(
     val fullImageUrl: String
         get() = IMAGE_BASE_URL + posterPath
 }
+
+data class Genre(
+    val id: Int,
+    val name: String
+)

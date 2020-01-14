@@ -23,10 +23,13 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
     init {
         viewModelScope.launch {
             mediaRepository.refreshMovies()
+            mediaRepository.refreshGenres()
         }
     }
 
     val movies = mediaRepository.movies
+
+    val genres = mediaRepository.genres
 
     override fun onCleared() {
         super.onCleared()
