@@ -9,7 +9,11 @@ import com.squareup.moshi.JsonClass
 import java.util.*
 
 @JsonClass(generateAdapter = true)
-data class NetworkMovieContainer(val results: List<NetworkMovie>)
+data class NetworkMovieContainer(
+    val page: Int,
+    @Json(name = "total_pages") val totalPages: Int,
+    val results: List<NetworkMovie>
+)
 
 @JsonClass(generateAdapter = true)
 data class NetworkGenreContainer(val genres: List<NetworkGenre>)
