@@ -1,5 +1,6 @@
 package com.example.android.releasedatekt.util
 
+import com.example.android.releasedatekt.domain.Genre
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,6 +34,28 @@ fun String.smartTruncate(length: Int): String {
         builder.append("...")
     }
     return builder.toString()
+}
+
+fun genreIdsToGenres(genreIds: List<Int>, allGenres: List<Genre>?): List<Genre> {
+    val genres: MutableList<Genre> = mutableListOf()
+    allGenres?.let {
+        for (genreId in genreIds) {
+            for (genre in allGenres) {
+                if (genreId == genre.id) {
+                    genres.add(genre)
+                }
+            }
+        }
+    }
+    return genres
+}
+
+fun genresToGenreIds(genres: List<Genre>): List<Int> {
+    val genreIds: MutableList<Int> = mutableListOf()
+    for (genre in genres) {
+        genreIds.add(genre.id)
+    }
+    return genreIds
 }
 
 object DateUtil {

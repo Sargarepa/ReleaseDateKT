@@ -4,41 +4,44 @@ import com.example.android.releasedatekt.database.DatabaseGenre
 import com.example.android.releasedatekt.database.DatabaseMovie
 import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
+import com.example.android.releasedatekt.util.genreIdsToGenres
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.util.*
 
 @JsonClass(generateAdapter = true)
 data class NetworkMovieContainer(
-    val page: Int,
+    @Json(name = "page") val page: Int,
     @Json(name = "total_pages") val totalPages: Int,
-    val results: List<NetworkMovie>
+    @Json(name = "results") val results: List<NetworkMovie>
 )
 
 @JsonClass(generateAdapter = true)
-data class NetworkGenreContainer(val genres: List<NetworkGenre>)
+data class NetworkGenreContainer(
+    @Json(name = "genres") val genres: List<NetworkGenre>
+)
 
 @JsonClass(generateAdapter = true)
 data class NetworkMovie(
-    val id: Int,
-    val popularity: Float,
+    @Json(name = "id") val id: Int,
+    @Json(name = "popularity")val popularity: Float,
     @Json(name = "vote_count") val voteCount: Int,
     @Json(name = "poster_path") val posterPath: String,
     @Json(name = "original_language") val language: String,
-    val title: String,
+    @Json(name = "title") val title: String,
     @Json(name = "genre_ids") val genreIds: List<Int>,
     @Json(name = "vote_average") val voteAverage: Float,
-    val overview: String,
+    @Json(name = "overview") val overview: String,
     @Json(name = "release_date") val releaseDate: Date
 )
 
 @JsonClass(generateAdapter = true)
 data class NetworkGenre(
-    val id: Int,
-    val name: String
+    @Json(name = "id") val id: Int,
+    @Json(name = "name") val name: String
 )
 
-fun NetworkMovieContainer.asDomainModelMovies(): List<Movie> {
+fun NetworkMovieContainer.asDomainModelMovies(allGenres: List<Genre>): List<Movie> {
     return results.map {
         Movie(
             id = it.id,
@@ -47,13 +50,14 @@ fun NetworkMovieContainer.asDomainModelMovies(): List<Movie> {
             posterPath = it.posterPath,
             language = it.language,
             title = it.title,
-            genreIds = it.genreIds,
+            genres = genreIdsToGenres(it.genreIds, allGenres),
             voteAverage = it.voteAverage,
             overview = it.overview,
             releaseDate = it.releaseDate
         )
     }
 }
+
 
 fun NetworkMovieContainer.asDatabaseModelMovies(): Array<DatabaseMovie> {
     return results.map {
@@ -64,7 +68,6 @@ fun NetworkMovieContainer.asDatabaseModelMovies(): Array<DatabaseMovie> {
             posterPath = it.posterPath,
             language = it.language,
             title = it.title,
-            genreIds = it.genreIds,
             voteAverage = it.voteAverage,
             overview = it.overview,
             releaseDate = it.releaseDate.time

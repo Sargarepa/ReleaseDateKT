@@ -18,16 +18,11 @@ fun setImageUrl(imageView: ImageView, url: String?) {
     Glide.with(imageView.context).load(url).into(imageView)
 }
 
-@BindingAdapter(value = ["genreIds", "genres"])
-fun setGenres(textView: TextView, genreIds: List<Int>, genres: List<Genre>) {
+@BindingAdapter("genres")
+fun setGenres(textView: TextView, genres: List<Genre>) {
     val genreStringList: MutableList<String> = mutableListOf()
-    for (genreId in genreIds) {
-        for (genre in genres) {
-            if (genreId == genre.id) {
-                genreStringList.add(genre.name)
-                break
-            }
-        }
+    for (genre in genres) {
+        genreStringList.add(genre.name)
     }
     val genreString = TextUtils.join(", ", genreStringList)
     textView.text = genreString
