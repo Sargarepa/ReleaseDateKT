@@ -17,8 +17,7 @@ class RefreshDataWorker (appContext: Context, params: WorkerParameters) : Corout
         val database = getDatabase(applicationContext)
         val repository = MediaRepository(database)
         return try {
-            repository.refreshMovies()
-            repository.refreshGenres()
+            repository.refreshMoviesAndGenres()
             Payload(Result.SUCCESS)
         } catch (e: HttpException) {
             Payload(Result.RETRY)

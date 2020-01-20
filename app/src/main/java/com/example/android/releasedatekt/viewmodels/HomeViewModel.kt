@@ -22,8 +22,7 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
 
     init {
         viewModelScope.launch {
-            mediaRepository.refreshMovies()
-            mediaRepository.refreshGenres()
+            mediaRepository.refreshMoviesAndGenres()
         }
     }
 

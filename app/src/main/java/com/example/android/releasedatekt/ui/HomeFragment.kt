@@ -43,12 +43,6 @@ class HomeFragment : Fragment() {
                 viewModelAdapter?.movies = movies
             }
         })
-
-        viewModel.genres.observe(this, Observer {genres ->
-            genres?.apply {
-                viewModelAdapter?.genres = genres
-            }
-        })
     }
 
     override fun onCreateView(
@@ -93,12 +87,6 @@ class HomeAdapter(val clickListener: MovieClickListener) : RecyclerView.Adapter<
             notifyDataSetChanged()
         }
 
-    var genres: List<Genre> = emptyList()
-        set(value) {
-            field = value
-
-            notifyDataSetChanged()
-        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val viewDataBinding: MediaItemBinding = DataBindingUtil.inflate(
@@ -116,7 +104,6 @@ class HomeAdapter(val clickListener: MovieClickListener) : RecyclerView.Adapter<
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.viewDataBinding.callback = clickListener
         holder.viewDataBinding.movie = movies[position]
-        holder.viewDataBinding.genres = genres
     }
 }
 
