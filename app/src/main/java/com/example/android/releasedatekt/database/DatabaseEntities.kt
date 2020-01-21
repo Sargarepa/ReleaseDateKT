@@ -29,7 +29,7 @@ data class DatabaseGenre constructor(
 @Entity(primaryKeys = ["movie_id", "genre_id"])
 data class DatabaseMovieGenreCrossRef(
     @ColumnInfo(name = "movie_id") val movieId: Int,
-    @ColumnInfo(name = "genre_id") val genreId: Int
+    @ColumnInfo(name = "genre_id", index = true) val genreId: Int
 )
 
 data class DatabaseMovieWithGenres (
