@@ -12,12 +12,12 @@ data class DatabaseMovie constructor(
     @ColumnInfo(name = "movie_id") val id: Int,
     @ColumnInfo(name = "popularity") val popularity: Float,
     @ColumnInfo(name = "vote_count") val voteCount: Int,
-    @ColumnInfo(name = "poster_path") val posterPath: String,
+    @ColumnInfo(name = "poster_path") val posterPath: String?,
     @ColumnInfo(name = "language") val language: String,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "vote_average") val voteAverage: Float,
     @ColumnInfo(name = "overview") val overview: String,
-    @ColumnInfo(name = "release_date") val releaseDate: Long
+    @ColumnInfo(name = "release_date") val releaseDate: Long?
 )
 
 @Entity
@@ -56,7 +56,9 @@ fun List<DatabaseMovieWithGenres>.asDomainModelMovies(): List<Movie> {
             genres = it.genres.asDomainModelGenres(),
             voteAverage = it.databaseMovie.voteAverage,
             overview = it.databaseMovie.overview,
-            releaseDate = Date(it.databaseMovie.releaseDate)
+            releaseDate = it.databaseMovie.releaseDate.let {
+                Date(it!!)
+            }
         )
     }
 }
@@ -72,7 +74,9 @@ fun DatabaseMovieWithGenres.asDomainModelMovie(): Movie {
         genres = genres.asDomainModelGenres(),
         voteAverage = databaseMovie.voteAverage,
         overview = databaseMovie.overview,
-        releaseDate = Date(databaseMovie.releaseDate)
+        releaseDate = databaseMovie.releaseDate.let {
+            Date(it!!)
+        }
     )
 }
 

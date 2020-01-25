@@ -19,11 +19,14 @@ fun setImageUrl(imageView: ImageView, url: String?) {
 }
 
 @BindingAdapter("genres")
-fun setGenres(textView: TextView, genres: List<Genre>) {
+fun setGenres(textView: TextView, genres: List<Genre>?) {
     val genreStringList: MutableList<String> = mutableListOf()
-    for (genre in genres) {
-        genreStringList.add(genre.name)
+    genres?.let {
+        for (genre in genres) {
+            genreStringList.add(genre.name)
+        }
     }
     val genreString = TextUtils.join(", ", genreStringList)
     textView.text = genreString
+
 }

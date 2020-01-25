@@ -27,7 +27,7 @@ interface MediaDao {
     fun insertAllGenres(vararg genres: DatabaseGenre)
 }
 
-@Database(entities = arrayOf(DatabaseMovie::class, DatabaseGenre::class, DatabaseMovieGenreCrossRef::class), version = 6, exportSchema = false)
+@Database(entities = arrayOf(DatabaseMovie::class, DatabaseGenre::class, DatabaseMovieGenreCrossRef::class), version = 8, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MediaDatabase : RoomDatabase() {
     abstract val mediaDao: MediaDao

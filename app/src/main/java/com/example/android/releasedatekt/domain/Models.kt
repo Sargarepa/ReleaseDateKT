@@ -11,13 +11,13 @@ data class Movie(
     val id: Int,
     val popularity: Float,
     val voteCount: Int,
-    val posterPath: String,
+    val posterPath: String?,
     val language: String,
     val title: String,
     val genres: List<Genre>,
     val voteAverage: Float,
     val overview: String,
-    val releaseDate: Date
+    val releaseDate: Date?
 ) {
     //Truncated overview to be displayed in UI if the overview is too long
     val shortOverview: String
@@ -48,7 +48,7 @@ fun List<Movie>.asDatabaseModelMovies(): Array<DatabaseMovie> {
             title = it.title,
             voteAverage = it.voteAverage,
             overview = it.overview,
-            releaseDate = it.releaseDate.time
+            releaseDate = it.releaseDate?.time
         )
     }.toTypedArray()
 }
