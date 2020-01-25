@@ -2,10 +2,13 @@ package com.example.android.releasedatekt.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.releasedatekt.database.getDatabase
-import com.example.android.releasedatekt.repository.MediaRepository
+import com.example.android.releasedatekt.data.MediaRepository
+import com.example.android.releasedatekt.database.asDomainModelMovie
+import com.example.android.releasedatekt.database.asDomainModelMovies
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -26,9 +29,7 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    val movies = mediaRepository.movies
-
-    val genres = mediaRepository.genres
+    val movies = mediaRepository.loadMovieResults(viewModelScope)
 
     override fun onCleared() {
         super.onCleared()

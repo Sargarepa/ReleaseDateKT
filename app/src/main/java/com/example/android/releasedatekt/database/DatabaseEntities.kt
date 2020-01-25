@@ -1,5 +1,6 @@
 package com.example.android.releasedatekt.database
 
+import androidx.paging.PagedList
 import androidx.room.*
 import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
@@ -11,12 +12,12 @@ data class DatabaseMovie constructor(
     @ColumnInfo(name = "movie_id") val id: Int,
     @ColumnInfo(name = "popularity") val popularity: Float,
     @ColumnInfo(name = "vote_count") val voteCount: Int,
-    @ColumnInfo(name = "poster_path") val posterPath: String,
+    @ColumnInfo(name = "poster_path") val posterPath: String?,
     @ColumnInfo(name = "language") val language: String,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "vote_average") val voteAverage: Float,
     @ColumnInfo(name = "overview") val overview: String,
-    @ColumnInfo(name = "release_date") val releaseDate: Long
+    @ColumnInfo(name = "release_date") val releaseDate: Long?
 )
 
 @Entity
@@ -29,7 +30,7 @@ data class DatabaseGenre constructor(
 @Entity(primaryKeys = ["movie_id", "genre_id"])
 data class DatabaseMovieGenreCrossRef(
     @ColumnInfo(name = "movie_id") val movieId: Int,
-    @ColumnInfo(name = "genre_id") val genreId: Int
+    @ColumnInfo(name = "genre_id", index = true) val genreId: Int
 )
 
 data class DatabaseMovieWithGenres (
@@ -55,9 +56,28 @@ fun List<DatabaseMovieWithGenres>.asDomainModelMovies(): List<Movie> {
             genres = it.genres.asDomainModelGenres(),
             voteAverage = it.databaseMovie.voteAverage,
             overview = it.databaseMovie.overview,
-            releaseDate = Date(it.databaseMovie.releaseDate)
+            releaseDate = it.databaseMovie.releaseDate.let {
+                Date(it!!)
+            }
         )
     }
+}
+
+fun DatabaseMovieWithGenres.asDomainModelMovie(): Movie {
+    return Movie(
+        id = databaseMovie.id,
+        popularity = databaseMovie.popularity,
+        voteCount = databaseMovie.voteCount,
+        posterPath = databaseMovie.posterPath,
+        language = databaseMovie.language,
+        title = databaseMovie.title,
+        genres = genres.asDomainModelGenres(),
+        voteAverage = databaseMovie.voteAverage,
+        overview = databaseMovie.overview,
+        releaseDate = databaseMovie.releaseDate.let {
+            Date(it!!)
+        }
+    )
 }
 
 fun List<DatabaseGenre>.asDomainModelGenres(): List<Genre> {
