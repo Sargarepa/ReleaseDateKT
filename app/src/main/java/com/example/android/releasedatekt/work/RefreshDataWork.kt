@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.android.releasedatekt.database.getDatabase
-import com.example.android.releasedatekt.repository.MediaRepository
+import com.example.android.releasedatekt.data.MediaRepository
 import retrofit2.HttpException
 
 class RefreshDataWorker (appContext: Context, params: WorkerParameters) : CoroutineWorker(appContext, params) {

@@ -11,6 +11,8 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -40,7 +42,7 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel.movies.observe(this, Observer {movies ->
             movies?.apply {
-                viewModelAdapter?.movies = movies
+                viewModelAdapter?.submitList(movies)
             }
         })
     }
@@ -78,14 +80,8 @@ class MovieClickListener(val clickListener: (Movie) -> Unit) {
     fun onClick(movie: Movie) = clickListener(movie)
 }
 
-class HomeAdapter(val clickListener: MovieClickListener) : RecyclerView.Adapter<MovieViewHolder>() {
+class HomeAdapter(val clickListener: MovieClickListener) : PagedListAdapter<Movie, MovieViewHolder>(MOVIE_COMPARATOR) {
 
-    var movies: List<Movie> = emptyList()
-        set(value) {
-            field = value
-
-            notifyDataSetChanged()
-        }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -99,11 +95,20 @@ class HomeAdapter(val clickListener: MovieClickListener) : RecyclerView.Adapter<
         return MovieViewHolder(viewDataBinding)
     }
 
-    override fun getItemCount(): Int = movies.size
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.viewDataBinding.callback = clickListener
-        holder.viewDataBinding.movie = movies[position]
+        holder.viewDataBinding.movie = getItem(position)
+    }
+
+    companion object {
+        private val MOVIE_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
+                oldItem == newItem
+        }
     }
 }
 

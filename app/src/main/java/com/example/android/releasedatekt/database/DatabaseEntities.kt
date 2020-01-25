@@ -1,5 +1,6 @@
 package com.example.android.releasedatekt.database
 
+import androidx.paging.PagedList
 import androidx.room.*
 import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
@@ -58,6 +59,21 @@ fun List<DatabaseMovieWithGenres>.asDomainModelMovies(): List<Movie> {
             releaseDate = Date(it.databaseMovie.releaseDate)
         )
     }
+}
+
+fun DatabaseMovieWithGenres.asDomainModelMovie(): Movie {
+    return Movie(
+        id = databaseMovie.id,
+        popularity = databaseMovie.popularity,
+        voteCount = databaseMovie.voteCount,
+        posterPath = databaseMovie.posterPath,
+        language = databaseMovie.language,
+        title = databaseMovie.title,
+        genres = genres.asDomainModelGenres(),
+        voteAverage = databaseMovie.voteAverage,
+        overview = databaseMovie.overview,
+        releaseDate = Date(databaseMovie.releaseDate)
+    )
 }
 
 fun List<DatabaseGenre>.asDomainModelGenres(): List<Genre> {

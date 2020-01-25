@@ -2,6 +2,7 @@ package com.example.android.releasedatekt.database
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
 
 @Dao
@@ -14,7 +15,7 @@ interface MediaDao {
 
     @Transaction
     @Query("select * from databasemovie")
-    fun getAllMoviesWithGenres(): LiveData<List<DatabaseMovieWithGenres>>
+    fun getAllMoviesWithGenres(): DataSource.Factory<Int, DatabaseMovieWithGenres>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovieGenreCrossRef(movieGenreCrossRef: DatabaseMovieGenreCrossRef)
