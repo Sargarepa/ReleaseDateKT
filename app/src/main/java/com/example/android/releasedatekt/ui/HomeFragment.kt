@@ -2,24 +2,23 @@ package com.example.android.releasedatekt.ui
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.android.releasedatekt.R
+import com.example.android.releasedatekt.application
 import com.example.android.releasedatekt.databinding.FragmentHomeBinding
 import com.example.android.releasedatekt.databinding.MediaItemBinding
-import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
 import com.example.android.releasedatekt.viewmodels.HomeViewModel
 
@@ -29,18 +28,19 @@ import com.example.android.releasedatekt.viewmodels.HomeViewModel
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by lazy {
-        val activity = requireNotNull(this.activity) {
-            "You can only access the viewModel after onActivityCreated()"
-        }
-        ViewModelProviders.of(this, HomeViewModel.Factory(activity.application))
-            .get(HomeViewModel::class.java)
+
+        val homeViewModelFactory = requireContext().application.applicationComponent
+            .homeViewModelFactory
+
+        ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel::class.java)
     }
 
     private var viewModelAdapter: HomeAdapter? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.movies.observe(this, Observer {movies ->
+
+        viewModel.movies.observe(this, Observer { movies ->
             movies?.apply {
                 viewModelAdapter?.submitList(movies)
             }
@@ -52,10 +52,12 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Create binding variable
-        val binding: FragmentHomeBinding = DataBindingUtil.inflate(inflater,
+        val binding: FragmentHomeBinding = DataBindingUtil.inflate(
+            inflater,
             R.layout.fragment_home,
             container,
-            false)
+            false
+        )
 
         binding.setLifecycleOwner(viewLifecycleOwner)
 
@@ -80,8 +82,8 @@ class MovieClickListener(val clickListener: (Movie) -> Unit) {
     fun onClick(movie: Movie) = clickListener(movie)
 }
 
-class HomeAdapter(val clickListener: MovieClickListener) : PagedListAdapter<Movie, MovieViewHolder>(MOVIE_COMPARATOR) {
-
+class HomeAdapter(private val clickListener: MovieClickListener) :
+    PagedListAdapter<Movie, MovieViewHolder>(MOVIE_COMPARATOR) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -112,7 +114,8 @@ class HomeAdapter(val clickListener: MovieClickListener) : PagedListAdapter<Movi
     }
 }
 
-class MovieViewHolder(val viewDataBinding: MediaItemBinding) : RecyclerView.ViewHolder(viewDataBinding.root) {
+class MovieViewHolder(val viewDataBinding: MediaItemBinding) :
+    RecyclerView.ViewHolder(viewDataBinding.root) {
     companion object {
         @LayoutRes
         val LAYOUT = R.layout.media_item

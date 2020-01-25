@@ -1,6 +1,5 @@
 package com.example.android.releasedatekt.database
 
-import androidx.paging.PagedList
 import androidx.room.*
 import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
@@ -33,7 +32,7 @@ data class DatabaseMovieGenreCrossRef(
     @ColumnInfo(name = "genre_id", index = true) val genreId: Int
 )
 
-data class DatabaseMovieWithGenres (
+data class DatabaseMovieWithGenres(
     @Embedded
     val databaseMovie: DatabaseMovie,
     @Relation(
@@ -44,23 +43,19 @@ data class DatabaseMovieWithGenres (
     val genres: List<DatabaseGenre>
 )
 
-fun List<DatabaseMovieWithGenres>.asDomainModelMovies(): List<Movie> {
-    return map {
-        Movie(
-            id = it.databaseMovie.id,
-            popularity = it.databaseMovie.popularity,
-            voteCount = it.databaseMovie.voteCount,
-            posterPath = it.databaseMovie.posterPath,
-            language = it.databaseMovie.language,
-            title = it.databaseMovie.title,
-            genres = it.genres.asDomainModelGenres(),
-            voteAverage = it.databaseMovie.voteAverage,
-            overview = it.databaseMovie.overview,
-            releaseDate = it.databaseMovie.releaseDate.let {
-                Date(it!!)
-            }
-        )
-    }
+fun DatabaseMovieWithGenres.asDomainModelMovies(): Movie {
+    return Movie(
+        id = databaseMovie.id,
+        popularity = databaseMovie.popularity,
+        voteCount = databaseMovie.voteCount,
+        posterPath = databaseMovie.posterPath,
+        language = databaseMovie.language,
+        title = databaseMovie.title,
+        genres = genres.asDomainModelGenres(),
+        voteAverage = databaseMovie.voteAverage,
+        overview = databaseMovie.overview,
+        releaseDate = databaseMovie.releaseDate?.let { Date(it) }
+    )
 }
 
 fun DatabaseMovieWithGenres.asDomainModelMovie(): Movie {

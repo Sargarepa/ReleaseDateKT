@@ -1,5 +1,6 @@
 package com.example.android.releasedatekt
 
+import android.content.Context
 import android.os.Build
 import androidx.multidex.MultiDexApplication
 import androidx.work.*
@@ -10,6 +11,8 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class ReleaseDateKTApplication : MultiDexApplication() {
+
+    lateinit var applicationComponent: ApplicationComponent
 
     val applicationScope = CoroutineScope(Dispatchers.Default)
 
@@ -44,5 +47,10 @@ class ReleaseDateKTApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         delayedInit()
+
+        applicationComponent = ApplicationComponent(this)
     }
 }
+
+val Context.application
+    get() = applicationContext as ReleaseDateKTApplication

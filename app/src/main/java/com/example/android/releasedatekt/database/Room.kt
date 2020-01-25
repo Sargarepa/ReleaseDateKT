@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
+import com.example.android.releasedatekt.singletonFactory
 
 @Dao
 interface MediaDao {
@@ -49,3 +50,5 @@ fun getDatabase(context: Context): MediaDatabase {
     }
     return INSTANCE
 }
+
+fun mediaDatabaseFactory(context: Context) = singletonFactory { getDatabase(context) }
