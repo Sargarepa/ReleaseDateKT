@@ -15,7 +15,8 @@ import kotlinx.coroutines.withContext
 
 class MovieBoundaryCallback (
     private val cache: MediaDatabase,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
+    private val block: suspend (Int) -> Unit
 ) : PagedList.BoundaryCallback<Movie>() {
 
     private var lastRequestedPage = 1
@@ -39,16 +40,7 @@ class MovieBoundaryCallback (
 
         isRequestInProgress = true
 
-        withContext(Dispatchers.IO) {
-            val moviesAndGenres = MoviesGenresNetworkRequest.getMoviesAndGenres(lastRequestedPage++)
-            for (movie in moviesAndGenres.movies) {
-                for (genre in movie.genres) {
-                    cache.mediaDao.insertMovieGenreCrossRef(DatabaseMovieGenreCrossRef(movie.id, genre.id))
-                }
-            }
-            cache.mediaDao.insertAllGenres(*moviesAndGenres.genres.asDatabaseModelGenres())
-            cache.mediaDao.insertAllMovies(*moviesAndGenres.movies.asDatabaseModelMovies())
-        }
+        block(lastRequestedPage++)
 
         isRequestInProgress = false
     }

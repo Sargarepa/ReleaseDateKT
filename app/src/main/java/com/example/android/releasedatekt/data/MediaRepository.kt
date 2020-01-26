@@ -8,7 +8,6 @@ import com.example.android.releasedatekt.database.DatabaseMovieGenreCrossRef
 import com.example.android.releasedatekt.database.asDomainModelMovie
 import com.example.android.releasedatekt.domain.*
 import com.example.android.releasedatekt.network.MoviesGenresNetworkRequest
-import com.example.android.releasedatekt.network.moviesGenresNetworkRequestFactory
 import com.example.android.releasedatekt.util.Factory
 import com.example.android.releasedatekt.util.singletonFactory
 import kotlinx.coroutines.CoroutineScope
@@ -23,7 +22,7 @@ class MediaRepository (private val cache: MediaDatabase, private val moviesGenre
             it.asDomainModelMovie()
         }
 
-        val boundaryCallback = MovieBoundaryCallback(cache, scope)
+        val boundaryCallback = MovieBoundaryCallback(cache, scope, ::refreshMoviesAndGenres)
 
 
         return LivePagedListBuilder(dataSourceFactory, DATABASE_PAGE_SIZE)
@@ -31,9 +30,9 @@ class MediaRepository (private val cache: MediaDatabase, private val moviesGenre
             .build()
     }
 
-    suspend fun refreshMoviesAndGenres() {
+    suspend fun refreshMoviesAndGenres(page: Int) {
         withContext(Dispatchers.IO) {
-            val moviesAndGenres = moviesGenresNetworkRequest.getMoviesAndGenres(1)
+            val moviesAndGenres = moviesGenresNetworkRequest.getMoviesAndGenres(page)
             for (movie in moviesAndGenres.movies) {
                 for (genre in movie.genres) {
                     cache.mediaDao.insertMovieGenreCrossRef(DatabaseMovieGenreCrossRef(movie.id, genre.id))

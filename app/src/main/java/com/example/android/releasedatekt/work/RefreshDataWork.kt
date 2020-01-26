@@ -19,7 +19,7 @@ class RefreshDataWorker (appContext: Context, params: WorkerParameters) : Corout
     override suspend fun doWork(): Payload {
         val repository = mediaRepositoryFactory(mediaDatabaseFactory(applicationContext), moviesGenresNetworkRequestFactory()).get()
         return try {
-            repository.refreshMoviesAndGenres()
+            repository.refreshMoviesAndGenres(1)
             Payload(Result.SUCCESS)
         } catch (e: HttpException) {
             Payload(Result.RETRY)
