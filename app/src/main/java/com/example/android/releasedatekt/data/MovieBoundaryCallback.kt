@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MovieBoundaryCallback (
-    private val cache: MediaDatabase,
     private val scope: CoroutineScope,
     private val block: suspend (Int) -> Unit
 ) : PagedList.BoundaryCallback<Movie>() {

@@ -86,7 +86,8 @@ fun NetworkMovieContainer.asDatabaseModelMovies(): Array<DatabaseMovie> {
             title = it.title,
             voteAverage = it.voteAverage,
             overview = it.overview,
-            releaseDate = it.releaseDate?.time
+            releaseDate = it.releaseDate?.time,
+            page = this.page
         )
     }.toTypedArray()
 }
