@@ -11,29 +11,44 @@ import java.util.*
 
 @JsonClass(generateAdapter = true)
 data class NetworkMovieContainer(
-    @Json(name = "page") val page: Int,
-    @Json(name = "total_pages") val totalPages: Int,
-    @Json(name = "results") val results: List<NetworkMovie>
+    @Json(name = "page")
+    val page: Int,
+    @Json(name = "total_pages")
+    val totalPages: Int,
+    @Json(name = "results")
+    val results: List<NetworkMovie>
 )
 
 @JsonClass(generateAdapter = true)
 data class NetworkGenreContainer(
-    @Json(name = "genres") val genres: List<NetworkGenre>
+    @Json(name = "genres")
+    val genres: List<NetworkGenre>
 )
 
 @JsonClass(generateAdapter = true)
 data class NetworkMovie(
-    @Json(name = "id") val id: Int,
-    @Json(name = "popularity")val popularity: Float,
-    @Json(name = "vote_count") val voteCount: Int,
-    @Json(name = "poster_path") val posterPath: String?,
-    @Json(name = "backdrop_path") val backdropPath: String?,
-    @Json(name = "original_language") val language: String,
-    @Json(name = "title") val title: String,
-    @Json(name = "genre_ids") val genreIds: List<Int>,
-    @Json(name = "vote_average") val voteAverage: Float,
-    @Json(name = "overview") val overview: String,
-    @Json(name = "release_date") val releaseDate: Date?
+    @Json(name = "id")
+    val id: Int,
+    @Json(name = "popularity")
+    val popularity: Float,
+    @Json(name = "vote_count")
+    val voteCount: Int,
+    @Json(name = "poster_path")
+    val posterPath: String?,
+    @Json(name = "backdrop_path")
+    val backdropPath: String?,
+    @Json(name = "original_language")
+    val language: String,
+    @Json(name = "title")
+    val title: String,
+    @Json(name = "genre_ids")
+    val genreIds: List<Int>,
+    @Json(name = "vote_average")
+    val voteAverage: Float,
+    @Json(name = "overview")
+    val overview: String,
+    @Json(name = "release_date")
+    val releaseDate: Date?
 )
 
 @JsonClass(generateAdapter = true)

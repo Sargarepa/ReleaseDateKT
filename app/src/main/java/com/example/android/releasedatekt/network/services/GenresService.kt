@@ -8,5 +8,7 @@ import retrofit2.http.Query
 
 interface GenresService {
     @GET("/3/genre/movie/list")
-    fun getGenres(@Query("api_key") api_key: String = API_KEY): Deferred<NetworkGenreContainer>
+    suspend fun getGenres(
+        @Query("api_key") api_key: String = API_KEY
+    ): NetworkGenreContainer
 }
