@@ -8,11 +8,14 @@ import com.example.android.releasedatekt.database.DatabaseMovieGenreCrossRef
 import com.example.android.releasedatekt.database.asDomainModelMovie
 import com.example.android.releasedatekt.domain.*
 import com.example.android.releasedatekt.network.MoviesGenresNetworkRequest
+import com.example.android.releasedatekt.network.moviesGenresNetworkRequestFactory
+import com.example.android.releasedatekt.util.Factory
+import com.example.android.releasedatekt.util.singletonFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MediaRepository (private val cache: MediaDatabase) {
+class MediaRepository (private val cache: MediaDatabase, private val moviesGenresNetworkRequest: MoviesGenresNetworkRequest) {
 
 
     fun loadMovieResults(scope: CoroutineScope): LiveData<PagedList<Movie>> {
@@ -30,7 +33,7 @@ class MediaRepository (private val cache: MediaDatabase) {
 
     suspend fun refreshMoviesAndGenres() {
         withContext(Dispatchers.IO) {
-            val moviesAndGenres = MoviesGenresNetworkRequest.getMoviesAndGenres(1)
+            val moviesAndGenres = moviesGenresNetworkRequest.getMoviesAndGenres(1)
             for (movie in moviesAndGenres.movies) {
                 for (genre in movie.genres) {
                     cache.mediaDao.insertMovieGenreCrossRef(DatabaseMovieGenreCrossRef(movie.id, genre.id))
@@ -45,3 +48,8 @@ class MediaRepository (private val cache: MediaDatabase) {
         private const val DATABASE_PAGE_SIZE = 20
     }
 }
+
+fun mediaRepositoryFactory(
+    mediaDatabaseFactory: Factory<MediaDatabase>,
+    moviesGenresNetworkRequestFactory: Factory<MoviesGenresNetworkRequest>
+): Factory<MediaRepository> = singletonFactory { MediaRepository(mediaDatabaseFactory.get(), moviesGenresNetworkRequestFactory.get()) }

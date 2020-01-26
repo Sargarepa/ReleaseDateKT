@@ -1,9 +1,12 @@
 package com.example.android.releasedatekt.database
 
 import android.content.Context
+import android.provider.MediaStore
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
+import com.example.android.releasedatekt.util.Factory
+import com.example.android.releasedatekt.util.SingletonFactory
 
 @Dao
 interface MediaDao {
@@ -49,3 +52,5 @@ fun getDatabase(context: Context): MediaDatabase {
     }
     return INSTANCE
 }
+
+fun mediaDatabaseFactory(context: Context): Factory<MediaDatabase> = SingletonFactory { getDatabase(context)}

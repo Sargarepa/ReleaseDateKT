@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.android.releasedatekt.R
+import com.example.android.releasedatekt.application
 import com.example.android.releasedatekt.databinding.FragmentHomeBinding
 import com.example.android.releasedatekt.databinding.MediaItemBinding
 import com.example.android.releasedatekt.domain.Genre
@@ -29,10 +30,10 @@ import com.example.android.releasedatekt.viewmodels.HomeViewModel
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by lazy {
-        val activity = requireNotNull(this.activity) {
-            "You can only access the viewModel after onActivityCreated()"
-        }
-        ViewModelProviders.of(this, HomeViewModel.Factory(activity.application))
+        val homeViewModelFactory = requireContext().application.applicationComponent
+            .homeViewModelFactory
+
+        ViewModelProviders.of(this, homeViewModelFactory)
             .get(HomeViewModel::class.java)
     }
 

@@ -5,6 +5,9 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.android.releasedatekt.database.getDatabase
 import com.example.android.releasedatekt.data.MediaRepository
+import com.example.android.releasedatekt.data.mediaRepositoryFactory
+import com.example.android.releasedatekt.database.mediaDatabaseFactory
+import com.example.android.releasedatekt.network.moviesGenresNetworkRequestFactory
 import retrofit2.HttpException
 
 class RefreshDataWorker (appContext: Context, params: WorkerParameters) : CoroutineWorker(appContext, params) {
@@ -14,8 +17,7 @@ class RefreshDataWorker (appContext: Context, params: WorkerParameters) : Corout
     }
 
     override suspend fun doWork(): Payload {
-        val database = getDatabase(applicationContext)
-        val repository = MediaRepository(database)
+        val repository = mediaRepositoryFactory(mediaDatabaseFactory(applicationContext), moviesGenresNetworkRequestFactory()).get()
         return try {
             repository.refreshMoviesAndGenres()
             Payload(Result.SUCCESS)
