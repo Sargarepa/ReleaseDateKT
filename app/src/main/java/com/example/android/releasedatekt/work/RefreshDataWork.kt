@@ -3,6 +3,7 @@ package com.example.android.releasedatekt.work
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.example.android.releasedatekt.application
 import com.example.android.releasedatekt.database.getDatabase
 import com.example.android.releasedatekt.data.MediaRepository
 import com.example.android.releasedatekt.data.mediaRepositoryFactory
@@ -17,7 +18,7 @@ class RefreshDataWorker (appContext: Context, params: WorkerParameters) : Corout
     }
 
     override suspend fun doWork(): Payload {
-        val repository = mediaRepositoryFactory(mediaDatabaseFactory(applicationContext), moviesGenresNetworkRequestFactory()).get()
+        val repository = applicationContext.application.applicationComponent.mediaRepositoryFactory.get()
         return try {
             repository.refreshMoviesAndGenres(1)
             Payload(Result.SUCCESS)
