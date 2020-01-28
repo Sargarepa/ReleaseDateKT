@@ -37,7 +37,7 @@ data class MoviesAndGenresWrapper(
     val genres: List<Genre>
 )
 
-fun List<Movie>.asDatabaseModelMovies(): Array<DatabaseMovie> {
+fun List<Movie>.asDatabaseModelMovies(page: Int): Array<DatabaseMovie> {
     return map {
         DatabaseMovie(
             id = it.id,
@@ -48,7 +48,8 @@ fun List<Movie>.asDatabaseModelMovies(): Array<DatabaseMovie> {
             title = it.title,
             voteAverage = it.voteAverage,
             overview = it.overview,
-            releaseDate = it.releaseDate?.time
+            releaseDate = it.releaseDate?.time,
+            page = page
         )
     }.toTypedArray()
 }

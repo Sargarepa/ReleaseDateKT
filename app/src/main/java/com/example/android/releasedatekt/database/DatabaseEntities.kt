@@ -10,6 +10,8 @@ data class DatabaseMovie constructor(
     @PrimaryKey
     @ColumnInfo(name = "movie_id")
     val id: Int,
+    @ColumnInfo(name = "page")
+    val page: Int,
     @ColumnInfo(name = "popularity")
     val popularity: Float,
     @ColumnInfo(name = "vote_count")

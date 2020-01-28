@@ -7,12 +7,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-object MoviesGenresNetworkRequest {
+class MoviesGenresNetworkRequest(private val network: Network) {
 
     suspend fun getMoviesAndGenres(page: Int): MoviesAndGenresWrapper {
         return withContext(Dispatchers.IO) {
-            val networkMoviesAsync = async { Network.movies.getMovies(page = page) }
-            val networkGenresAsync = async { Network.genres.getGenres() }
+            val networkMoviesAsync = async { network.movies.getMovies(page = page) }
+            val networkGenresAsync = async { network.genres.getGenres() }
 
             val networkMovies = networkMoviesAsync.await()
             val networkGenres = networkGenresAsync.await()
@@ -27,5 +27,5 @@ object MoviesGenresNetworkRequest {
 }
 
 fun moviesGenresNetworkRequestFactory(
-
-) : Factory<MoviesGenresNetworkRequest> = SingletonFactory { MoviesGenresNetworkRequest }
+    networkFactory: Factory<Network>
+) : Factory<MoviesGenresNetworkRequest> = SingletonFactory { MoviesGenresNetworkRequest(networkFactory.get()) }

@@ -3,6 +3,8 @@ package com.example.android.releasedatekt.network
 import com.example.android.releasedatekt.network.NetworkConstants.BASE_URL
 import com.example.android.releasedatekt.network.services.GenresService
 import com.example.android.releasedatekt.network.services.MoviesService
+import com.example.android.releasedatekt.util.Factory
+import com.example.android.releasedatekt.util.SingletonFactory
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -20,7 +22,7 @@ private val moshi = Moshi.Builder()
     .add(DateAdapter())
     .build()
 
-object Network {
+class Network {
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(MoshiConverterFactory.create(moshi))
@@ -30,3 +32,5 @@ object Network {
     val movies = retrofit.create(MoviesService::class.java)
     val genres = retrofit.create(GenresService::class.java)
 }
+
+fun networkFactory(): Factory<Network> = SingletonFactory { Network() }

@@ -17,7 +17,7 @@ class HomeViewModel(private val mediaRepository: MediaRepository): ViewModel() {
 
     init {
         viewModelScope.launch {
-            mediaRepository.refreshMoviesAndGenres()
+            mediaRepository.refreshMoviesAndGenres(1)
         }
     }
 

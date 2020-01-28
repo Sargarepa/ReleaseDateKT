@@ -17,7 +17,7 @@ interface MediaDao {
     fun getAllGenres(): LiveData<List<DatabaseGenre>>
 
     @Transaction
-    @Query("select * from databasemovie")
+    @Query("select * from databasemovie order by page asc")
     fun getAllMoviesWithGenres(): DataSource.Factory<Int, DatabaseMovieWithGenres>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -30,7 +30,7 @@ interface MediaDao {
     fun insertAllGenres(vararg genres: DatabaseGenre)
 }
 
-@Database(entities = arrayOf(DatabaseMovie::class, DatabaseGenre::class, DatabaseMovieGenreCrossRef::class), version = 8, exportSchema = false)
+@Database(entities = arrayOf(DatabaseMovie::class, DatabaseGenre::class, DatabaseMovieGenreCrossRef::class), version = 9, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MediaDatabase : RoomDatabase() {
     abstract val mediaDao: MediaDao
