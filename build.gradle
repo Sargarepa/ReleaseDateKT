@@ -24,6 +24,7 @@ buildscript {
         version_timber = "4.7.1"
         version_multidex = "2.0.1"
         version_paging = "2.1.1"
+        version_dagger = "2.26"
     }
 
     repositories {
