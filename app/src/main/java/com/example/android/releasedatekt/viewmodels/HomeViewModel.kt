@@ -1,15 +1,14 @@
 package com.example.android.releasedatekt.viewmodels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.android.releasedatekt.data.MediaRepository
-import com.example.android.releasedatekt.util.Factory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(private val mediaRepository: MediaRepository): ViewModel() {
+class HomeViewModel @Inject constructor (private val mediaRepository: MediaRepository): ViewModel() {
 
     private val viewModelJob = SupervisorJob()
 
@@ -26,15 +25,5 @@ class HomeViewModel(private val mediaRepository: MediaRepository): ViewModel() {
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
-    }
-}
-
-class HomeViewModelFactory(private val mediaRepositoryFactory: Factory<MediaRepository>) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return HomeViewModel(mediaRepositoryFactory.get()) as T
-        }
-        throw IllegalArgumentException("Unable to construct viewmodel")
     }
 }

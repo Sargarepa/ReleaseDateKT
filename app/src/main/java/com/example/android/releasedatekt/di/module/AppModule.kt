@@ -14,17 +14,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 
-@Module
-class NetworkModule {
+@Module(includes = [ViewModelModule::class, CoreDataModule::class])
+class AppModule {
 
-    @Singleton
-    @Provides
-    fun provideMoshi(): Moshi {
-        return Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .add(DateAdapter())
-            .build()
-    }
 
     @Singleton
     @Provides

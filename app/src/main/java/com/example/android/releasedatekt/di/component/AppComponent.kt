@@ -1,6 +1,6 @@
 package com.example.android.releasedatekt.di.component
 
-import com.example.android.releasedatekt.network.Network
+import com.example.android.releasedatekt.network.RemoteDataSource
 import dagger.Component
 import javax.inject.Singleton
 
@@ -8,6 +8,6 @@ import javax.inject.Singleton
 @Component
 interface AppComponent {
 
-    fun network(): Network
+    fun network(): RemoteDataSource
 
 }
