@@ -13,8 +13,9 @@ import com.example.android.releasedatekt.util.singletonFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class MediaRepository (private val database: MediaDatabase, private val moviesGenresNetworkRequest: MoviesGenresNetworkRequest) {
+class MediaRepository @Inject constructor (private val database: MediaDatabase, private val moviesGenresNetworkRequest: MoviesGenresNetworkRequest) {
 
 
     fun loadMovieResults(scope: CoroutineScope): LiveData<PagedList<Movie>> {

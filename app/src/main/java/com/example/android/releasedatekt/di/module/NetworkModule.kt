@@ -35,15 +35,4 @@ class NetworkModule {
             .build()
     }
 
-    @Singleton
-    @Provides
-    fun provideMoviesService(retrofit: Retrofit): MoviesService {
-        return retrofit.create(MoviesService::class.java)
-    }
-
-    @Singleton
-    @Provides
-    fun provideGenresService(retrofit: Retrofit): GenresService {
-        return retrofit.create(GenresService::class.java)
-    }
 }

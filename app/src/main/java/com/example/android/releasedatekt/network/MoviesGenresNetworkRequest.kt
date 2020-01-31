@@ -1,13 +1,12 @@
 package com.example.android.releasedatekt.network
 
 import com.example.android.releasedatekt.domain.MoviesAndGenresWrapper
-import com.example.android.releasedatekt.util.Factory
-import com.example.android.releasedatekt.util.SingletonFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class MoviesGenresNetworkRequest(private val network: Network) {
+class MoviesGenresNetworkRequest @Inject constructor (private val network: Network) {
 
     suspend fun getMoviesAndGenres(page: Int): MoviesAndGenresWrapper {
         return withContext(Dispatchers.IO) {
@@ -25,7 +24,3 @@ class MoviesGenresNetworkRequest(private val network: Network) {
     }
 
 }
-
-fun moviesGenresNetworkRequestFactory(
-    networkFactory: Factory<Network>
-) : Factory<MoviesGenresNetworkRequest> = SingletonFactory { MoviesGenresNetworkRequest(networkFactory.get()) }
