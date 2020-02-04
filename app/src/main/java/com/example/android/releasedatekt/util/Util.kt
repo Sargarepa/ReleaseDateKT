@@ -50,16 +50,9 @@ fun genreIdsToGenres(genreIds: List<Int>, allGenres: List<Genre>?): List<Genre> 
     return genres
 }
 
-fun genresToGenreIds(genres: List<Genre>): List<Int> {
-    val genreIds: MutableList<Int> = mutableListOf()
-    for (genre in genres) {
-        genreIds.add(genre.id)
-    }
-    return genreIds
-}
 
 object DateUtil {
-    const val SERVER_FORMAT = "yyyy-MM-dd"
+    private const val SERVER_FORMAT = "yyyy-MM-dd"
 
     val dateFormat = SimpleDateFormat(SERVER_FORMAT, Locale.US)
 }

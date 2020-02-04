@@ -3,22 +3,25 @@ package com.example.android.releasedatekt.data
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.example.android.releasedatekt.database.MediaDatabase
 import com.example.android.releasedatekt.database.DatabaseMovieGenreCrossRef
+import com.example.android.releasedatekt.database.MediaDao
 import com.example.android.releasedatekt.database.asDomainModelMovie
 import com.example.android.releasedatekt.domain.*
 import com.example.android.releasedatekt.network.MoviesGenresNetworkRequest
-import com.example.android.releasedatekt.util.Factory
-import com.example.android.releasedatekt.util.singletonFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MediaRepository (private val database: MediaDatabase, private val moviesGenresNetworkRequest: MoviesGenresNetworkRequest) {
-
+@Singleton
+class MediaRepository
+@Inject constructor (
+    private val mediaDao: MediaDao, private val moviesGenresNetworkRequest: MoviesGenresNetworkRequest
+) {
 
     fun loadMovieResults(scope: CoroutineScope): LiveData<PagedList<Movie>> {
-        val dataSourceFactory = database.mediaDao.getAllMoviesWithGenres().map {
+        val dataSourceFactory = mediaDao.getAllMoviesWithGenres().map {
             it.asDomainModelMovie()
         }
 
@@ -35,11 +38,11 @@ class MediaRepository (private val database: MediaDatabase, private val moviesGe
             val moviesAndGenres = moviesGenresNetworkRequest.getMoviesAndGenres(page)
             for (movie in moviesAndGenres.movies) {
                 for (genre in movie.genres) {
-                    database.mediaDao.insertMovieGenreCrossRef(DatabaseMovieGenreCrossRef(movie.id, genre.id))
+                    mediaDao.insertMovieGenreCrossRef(DatabaseMovieGenreCrossRef(movie.id, genre.id))
                 }
             }
-            database.mediaDao.insertAllGenres(*moviesAndGenres.genres.asDatabaseModelGenres())
-            database.mediaDao.insertAllMovies(*moviesAndGenres.movies.asDatabaseModelMovies(page))
+            mediaDao.insertAllGenres(*moviesAndGenres.genres.asDatabaseModelGenres())
+            mediaDao.insertAllMovies(*moviesAndGenres.movies.asDatabaseModelMovies(page))
         }
     }
 
@@ -47,8 +50,3 @@ class MediaRepository (private val database: MediaDatabase, private val moviesGe
         private const val DATABASE_PAGE_SIZE = 20
     }
 }
-
-fun mediaRepositoryFactory(
-    mediaDatabaseFactory: Factory<MediaDatabase>,
-    moviesGenresNetworkRequestFactory: Factory<MoviesGenresNetworkRequest>
-): Factory<MediaRepository> = singletonFactory { MediaRepository(mediaDatabaseFactory.get(), moviesGenresNetworkRequestFactory.get()) }
