@@ -1,6 +1,7 @@
 package com.example.android.releasedatekt.ui
 
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,19 +21,20 @@ import com.example.android.releasedatekt.R
 import com.example.android.releasedatekt.application
 import com.example.android.releasedatekt.databinding.FragmentHomeBinding
 import com.example.android.releasedatekt.databinding.MediaItemBinding
-import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
 import com.example.android.releasedatekt.viewmodels.HomeViewModel
+import com.example.android.releasedatekt.viewmodels.ViewModelFactory
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
 class HomeFragment : Fragment() {
 
-    private val viewModel: HomeViewModel by lazy {
-        val homeViewModelFactory = requireContext().application.applicationComponent
-            .homeViewModelFactory
+    @Inject
+    lateinit var homeViewModelFactory: ViewModelFactory
 
+    private val viewModel: HomeViewModel by lazy {
         ViewModelProviders.of(this, homeViewModelFactory)
             .get(HomeViewModel::class.java)
     }
@@ -46,6 +48,11 @@ class HomeFragment : Fragment() {
                 viewModelAdapter?.submitList(movies)
             }
         })
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        requireContext().application.appComponent.inject(this)
     }
 
     override fun onCreateView(

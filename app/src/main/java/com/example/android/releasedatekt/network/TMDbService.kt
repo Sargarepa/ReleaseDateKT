@@ -1,10 +1,18 @@
 package com.example.android.releasedatekt.network
 
-import com.example.android.releasedatekt.network.NetworkConstants.API_KEY
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+
+
 interface TMDbService {
+
+    companion object {
+        const val BASE_URL = "https://api.themoviedb.org/"
+        const val API_KEY = "459e450632dfc0e39bfcc76eff02e6c4"
+        const val IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w185"
+    }
+
     @GET("/3/genre/movie/list")
     suspend fun getGenres(
         @Query("api_key") api_key: String = API_KEY

@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Build
 import androidx.multidex.MultiDexApplication
 import androidx.work.*
+import com.example.android.releasedatekt.di.component.AppComponent
+import com.example.android.releasedatekt.di.component.DaggerAppComponent
 import com.example.android.releasedatekt.work.RefreshDataWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,11 +14,13 @@ import java.util.concurrent.TimeUnit
 
 class ReleaseDateKTApplication : MultiDexApplication() {
 
-    val applicationScope = CoroutineScope(Dispatchers.Default)
+    private val applicationScope = CoroutineScope(Dispatchers.Default)
 
-    lateinit var applicationComponent: ApplicationComponent
+    val appComponent: AppComponent by lazy {
+        DaggerAppComponent.factory().create(applicationContext)
+    }
 
-    fun delayedInit() {
+    private fun delayedInit() {
         applicationScope.launch {
             setupRecurringWork()
         }
@@ -47,8 +51,6 @@ class ReleaseDateKTApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         delayedInit()
-
-        applicationComponent = ApplicationComponent(this)
     }
 }
 

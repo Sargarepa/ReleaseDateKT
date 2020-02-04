@@ -1,7 +1,5 @@
 package com.example.android.releasedatekt.network
 
-import com.example.android.releasedatekt.database.DatabaseGenre
-import com.example.android.releasedatekt.database.DatabaseMovie
 import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
 import com.example.android.releasedatekt.util.genreIdsToGenres
@@ -75,23 +73,6 @@ fun NetworkMovieContainer.asDomainModelMovies(allGenres: List<Genre>): List<Movi
 }
 
 
-fun NetworkMovieContainer.asDatabaseModelMovies(): Array<DatabaseMovie> {
-    return results.map {
-        DatabaseMovie(
-            id = it.id,
-            popularity = it.popularity,
-            voteCount = it.voteCount,
-            posterPath = it.posterPath?:it.backdropPath,
-            language = it.language,
-            title = it.title,
-            voteAverage = it.voteAverage,
-            overview = it.overview,
-            releaseDate = it.releaseDate?.time,
-            page = this.page
-        )
-    }.toTypedArray()
-}
-
 fun NetworkGenreContainer.asDomainModelGenres(): List<Genre> {
     return genres.map {
         Genre(
@@ -99,13 +80,4 @@ fun NetworkGenreContainer.asDomainModelGenres(): List<Genre> {
             name = it.name
         )
     }
-}
-
-fun NetworkGenreContainer.asDatabaseModelGenres(): Array<DatabaseGenre> {
-    return genres.map {
-        DatabaseGenre(
-            id = it.id,
-            name = it.name
-        )
-    }.toTypedArray()
 }

@@ -1,17 +1,9 @@
 package com.example.android.releasedatekt.data
 
 import androidx.paging.PagedList
-import com.example.android.releasedatekt.database.DatabaseMovieGenreCrossRef
-import com.example.android.releasedatekt.database.DatabaseMovieWithGenres
-import com.example.android.releasedatekt.database.MediaDatabase
 import com.example.android.releasedatekt.domain.Movie
-import com.example.android.releasedatekt.domain.asDatabaseModelGenres
-import com.example.android.releasedatekt.domain.asDatabaseModelMovies
-import com.example.android.releasedatekt.network.MoviesGenresNetworkRequest
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MovieBoundaryCallback (
     private val scope: CoroutineScope,

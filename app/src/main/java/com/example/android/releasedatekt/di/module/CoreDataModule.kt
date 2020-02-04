@@ -25,16 +25,13 @@ class CoreDataModule {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    @Provides
-    @Singleton
-    fun provideDateAdapter(): DateAdapter = DateAdapter()
 
     @Provides
     @Singleton
-    fun provideMoshi(dateAdapter: DateAdapter): Moshi =
+    fun provideMoshi(): Moshi =
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
-            .add(dateAdapter)
+            .add(DateAdapter())
             .build()
 
     @Provides
