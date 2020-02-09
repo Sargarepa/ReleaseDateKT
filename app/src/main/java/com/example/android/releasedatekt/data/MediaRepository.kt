@@ -16,8 +16,9 @@ import javax.inject.Singleton
 
 @Singleton
 class MediaRepository
-@Inject constructor (
-    private val mediaDao: MediaDao, private val moviesGenresNetworkRequest: MoviesGenresNetworkRequest
+@Inject constructor(
+    private val mediaDao: MediaDao,
+    private val moviesGenresNetworkRequest: MoviesGenresNetworkRequest
 ) {
 
     fun loadMovieResults(scope: CoroutineScope): LiveData<PagedList<Movie>> {
@@ -38,7 +39,12 @@ class MediaRepository
             val moviesAndGenres = moviesGenresNetworkRequest.getMoviesAndGenres(page)
             for (movie in moviesAndGenres.movies) {
                 for (genre in movie.genres) {
-                    mediaDao.insertMovieGenreCrossRef(DatabaseMovieGenreCrossRef(movie.id, genre.id))
+                    mediaDao.insertMovieGenreCrossRef(
+                        DatabaseMovieGenreCrossRef(
+                            movie.id,
+                            genre.id
+                        )
+                    )
                 }
             }
             mediaDao.insertAllGenres(*moviesAndGenres.genres.asDatabaseModelGenres())

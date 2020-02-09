@@ -6,12 +6,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class MoviesGenresNetworkRequest @Inject constructor (private val remoteDataSource: RemoteDataSource) {
+class MoviesGenresNetworkRequest @Inject constructor(private val tmDbService: TMDbService) {
 
     suspend fun getMoviesAndGenres(page: Int): MoviesAndGenresWrapper {
         return withContext(Dispatchers.IO) {
-            val networkMoviesAsync = async { remoteDataSource.fetchMovies(page = page) }
-            val networkGenresAsync = async { remoteDataSource.fetchGenres() }
+            val networkMoviesAsync = async { tmDbService.getMovies(page = page) }
+            val networkGenresAsync = async { tmDbService.getGenres() }
 
             val networkMovies = networkMoviesAsync.await()
             val networkGenres = networkGenresAsync.await()

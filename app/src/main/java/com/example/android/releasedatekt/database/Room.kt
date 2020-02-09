@@ -4,8 +4,13 @@ import android.content.Context
 import androidx.room.*
 
 
-
-@Database(entities = arrayOf(DatabaseMovie::class, DatabaseGenre::class, DatabaseMovieGenreCrossRef::class), version = 9, exportSchema = false)
+@Database(
+    entities = arrayOf(
+        DatabaseMovie::class,
+        DatabaseGenre::class,
+        DatabaseMovieGenreCrossRef::class
+    ), version = 9, exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class MediaDatabase : RoomDatabase() {
     abstract val mediaDao: MediaDao

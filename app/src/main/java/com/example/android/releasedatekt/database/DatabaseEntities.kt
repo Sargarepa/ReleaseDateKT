@@ -47,7 +47,7 @@ data class DatabaseMovieGenreCrossRef(
     val genreId: Int
 )
 
-data class DatabaseMovieWithGenres (
+data class DatabaseMovieWithGenres(
     @Embedded
     val databaseMovie: DatabaseMovie,
     @Relation(
@@ -78,7 +78,7 @@ fun DatabaseMovieWithGenres.asDomainModelMovie(): Movie {
 
 fun DatabaseGenre.asDomainModelGenres(): Genre {
     return Genre(
-            id = id,
-            name = name
-        )
+        id = id,
+        name = name
+    )
 }

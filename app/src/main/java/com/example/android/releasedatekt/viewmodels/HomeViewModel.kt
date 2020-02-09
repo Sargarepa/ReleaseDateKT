@@ -8,7 +8,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor (private val mediaRepository: MediaRepository): ViewModel() {
+class HomeViewModel @Inject constructor(private val mediaRepository: MediaRepository) :
+    ViewModel() {
 
     private val viewModelJob = SupervisorJob()
 

@@ -61,7 +61,7 @@ fun NetworkMovieContainer.asDomainModelMovies(allGenres: List<Genre>): List<Movi
             id = it.id,
             popularity = it.popularity,
             voteCount = it.voteCount,
-            posterPath = it.posterPath?:it.backdropPath,
+            posterPath = it.posterPath ?: it.backdropPath,
             language = it.language,
             title = it.title,
             genres = genreIdsToGenres(it.genreIds, allGenres),

@@ -8,7 +8,6 @@ import java.util.*
 
 class DateAdapter : JsonAdapter<Date>() {
 
-
     @FromJson
     override fun fromJson(reader: JsonReader): Date? {
         return try {
@@ -21,7 +20,7 @@ class DateAdapter : JsonAdapter<Date>() {
 
     @ToJson
     override fun toJson(writer: JsonWriter, value: Date?) {
-        if(value != null) {
+        if (value != null) {
             writer.value(value.toString())
         }
     }

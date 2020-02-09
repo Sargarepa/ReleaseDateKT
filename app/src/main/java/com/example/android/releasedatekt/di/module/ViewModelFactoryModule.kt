@@ -14,7 +14,7 @@ class ViewModelFactoryModule {
 
     @Provides
     @Singleton
-    fun viewModelFactory(providerMap: Map<Class<out ViewModel>, Provider<ViewModel>>) : ViewModelProvider.Factory {
+    fun viewModelFactory(providerMap: Map<Class<out ViewModel>, Provider<ViewModel>>): ViewModelProvider.Factory {
         return ViewModelFactory(providerMap)
     }
 

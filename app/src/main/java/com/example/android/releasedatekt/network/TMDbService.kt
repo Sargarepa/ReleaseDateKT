@@ -3,8 +3,6 @@ package com.example.android.releasedatekt.network
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-
-
 interface TMDbService {
 
     companion object {
