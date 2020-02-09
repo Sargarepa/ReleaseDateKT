@@ -13,7 +13,12 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 
-@Module(includes = [ViewModelModule::class, CoreDataModule::class, ViewModelFactoryModule::class])
+@Module(
+    includes = [ViewModelModule::class,
+        CoreDataModule::class,
+        ViewModelFactoryModule::class,
+        WorkerModule::class]
+)
 class AppModule {
 
     @Singleton
