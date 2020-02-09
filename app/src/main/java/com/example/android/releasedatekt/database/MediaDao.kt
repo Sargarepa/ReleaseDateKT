@@ -24,4 +24,10 @@ interface MediaDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllGenres(vararg genres: DatabaseGenre)
+
+    @Delete
+    fun deleteAllMovies(vararg movies: DatabaseMovie)
+
+    @Delete
+    fun deleteAllGenres(vararg genres: DatabaseGenre)
 }
