@@ -24,6 +24,14 @@ data class NetworkGenreContainer(
 )
 
 @JsonClass(generateAdapter = true)
+data class NetworkMovieVideoContainer(
+    @Json(name = "id")
+    val id: Int,
+    @Json(name = "results")
+    val results: List<NetworkMovieVideo>
+)
+
+@JsonClass(generateAdapter = true)
 data class NetworkMovie(
     @Json(name = "id")
     val id: Int,
@@ -51,8 +59,26 @@ data class NetworkMovie(
 
 @JsonClass(generateAdapter = true)
 data class NetworkGenre(
-    @Json(name = "id") val id: Int,
-    @Json(name = "name") val name: String
+    @Json(name = "id")
+    val id: Int,
+    @Json(name = "name")
+    val name: String
+)
+
+@JsonClass(generateAdapter = true)
+data class NetworkMovieVideo(
+    @Json(name = "id")
+    val id: Int,
+    @Json(name = "key")
+    val key: String,
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "site")
+    val site: String,
+    @Json(name = "size")
+    val size: Int,
+    @Json(name = "type")
+    val type: String
 )
 
 fun NetworkMovieContainer.asDomainModelMovies(allGenres: List<Genre>): List<Movie> {
