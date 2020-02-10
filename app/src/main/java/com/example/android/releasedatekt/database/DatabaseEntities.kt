@@ -39,6 +39,23 @@ data class DatabaseGenre constructor(
     val name: String
 )
 
+@Entity
+data class DatabaseMovieVideo constructor(
+    @PrimaryKey
+    @ColumnInfo(name = "video_id")
+    val id: Int,
+    @ColumnInfo(name = "movie_id")
+    val movieId: Int,
+    @ColumnInfo(name = "key")
+    val key: String,
+    @ColumnInfo(name = "site")
+    val site: String,
+    @ColumnInfo(name = "size")
+    val size: Int,
+    @ColumnInfo(name = "type")
+    val type: String
+)
+
 @Entity(primaryKeys = ["movie_id", "genre_id"])
 data class DatabaseMovieGenreCrossRef(
     @ColumnInfo(name = "movie_id")

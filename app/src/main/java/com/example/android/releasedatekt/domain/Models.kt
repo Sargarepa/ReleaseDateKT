@@ -31,6 +31,15 @@ data class Genre(
     val name: String
 )
 
+data class MovieVideo(
+    val id: Int,
+    val movieId: Int,
+    val key: String,
+    val site: String,
+    val size: Int,
+    val type: String
+)
+
 data class MoviesAndGenresWrapper(
     val movies: List<Movie>,
     val genres: List<Genre>
