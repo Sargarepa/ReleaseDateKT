@@ -8,12 +8,14 @@ import androidx.room.*
     entities = arrayOf(
         DatabaseMovie::class,
         DatabaseGenre::class,
-        DatabaseMovieGenreCrossRef::class
-    ), version = 9, exportSchema = false
+        DatabaseMovieGenreCrossRef::class,
+        DatabaseMovieTrailer::class
+    ), version = 10, exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class MediaDatabase : RoomDatabase() {
-    abstract val mediaDao: MediaDao
+    abstract val movieDao: MovieDao
+    abstract val trailerDao: TrailerDao
 }
 
 private lateinit var INSTANCE: MediaDatabase

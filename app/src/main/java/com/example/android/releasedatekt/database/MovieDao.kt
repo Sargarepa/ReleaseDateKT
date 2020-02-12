@@ -5,7 +5,7 @@ import androidx.paging.DataSource
 import androidx.room.*
 
 @Dao
-interface MediaDao {
+interface MovieDao {
     @Query("select * from databasemovie")
     fun getAllMovies(): LiveData<List<DatabaseMovie>>
 

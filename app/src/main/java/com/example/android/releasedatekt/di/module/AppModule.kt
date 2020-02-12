@@ -45,7 +45,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideMediaDao(db: MediaDatabase) = db.mediaDao
+    fun provideMovieDao(db: MediaDatabase) = db.movieDao
 
 
 }

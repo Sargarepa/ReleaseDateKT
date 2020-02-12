@@ -3,6 +3,7 @@ package com.example.android.releasedatekt.database
 import androidx.room.*
 import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
+import com.example.android.releasedatekt.domain.MovieTrailer
 import java.util.*
 
 @Entity
@@ -77,6 +78,17 @@ data class DatabaseMovieWithGenres(
     val genres: List<DatabaseGenre>
 )
 
+fun DatabaseMovieTrailer.asDomainModelMovieTrailer(): MovieTrailer {
+    return MovieTrailer(
+        id = id,
+        movieId = movieId,
+        key = key,
+        name = name,
+        site = site,
+        size = size,
+        type = type
+    )
+}
 
 fun DatabaseMovieWithGenres.asDomainModelMovie(): Movie {
     return Movie(

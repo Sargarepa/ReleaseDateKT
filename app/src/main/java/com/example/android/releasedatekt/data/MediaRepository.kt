@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.android.releasedatekt.database.DatabaseMovieGenreCrossRef
-import com.example.android.releasedatekt.database.MediaDao
+import com.example.android.releasedatekt.database.MovieDao
 import com.example.android.releasedatekt.database.asDomainModelMovie
 import com.example.android.releasedatekt.domain.*
 import com.example.android.releasedatekt.network.MoviesGenresNetworkRequest
@@ -17,12 +17,12 @@ import javax.inject.Singleton
 @Singleton
 class MediaRepository
 @Inject constructor(
-    private val mediaDao: MediaDao,
+    private val movieDao: MovieDao,
     private val moviesGenresNetworkRequest: MoviesGenresNetworkRequest
 ) {
 
     fun loadMovieResults(scope: CoroutineScope): LiveData<PagedList<Movie>> {
-        val dataSourceFactory = mediaDao.getAllMoviesWithGenres().map {
+        val dataSourceFactory = movieDao.getAllMoviesWithGenres().map {
             it.asDomainModelMovie()
         }
 
@@ -39,7 +39,7 @@ class MediaRepository
             val moviesAndGenres = moviesGenresNetworkRequest.getMoviesAndGenres(page)
             for (movie in moviesAndGenres.movies) {
                 for (genre in movie.genres) {
-                    mediaDao.insertMovieGenreCrossRef(
+                    movieDao.insertMovieGenreCrossRef(
                         DatabaseMovieGenreCrossRef(
                             movie.id,
                             genre.id
@@ -47,8 +47,8 @@ class MediaRepository
                     )
                 }
             }
-            mediaDao.insertAllGenres(*moviesAndGenres.genres.asDatabaseModelGenres())
-            mediaDao.insertAllMovies(*moviesAndGenres.movies.asDatabaseModelMovies(page))
+            movieDao.insertAllGenres(*moviesAndGenres.genres.asDatabaseModelGenres())
+            movieDao.insertAllMovies(*moviesAndGenres.movies.asDatabaseModelMovies(page))
         }
     }
 
