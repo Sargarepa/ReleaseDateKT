@@ -26,5 +26,5 @@ interface TMDbService {
     suspend fun getMovieVideos(
         @Path("movie_id") id: Int,
         @Query("api_key") apiKey: String = API_KEY
-    ): NetworkMovieVideoContainer
+    ): NetworkMovieTrailerContainer
 }

@@ -2,6 +2,7 @@ package com.example.android.releasedatekt.network
 
 import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
+import com.example.android.releasedatekt.domain.MovieTrailer
 import com.example.android.releasedatekt.util.genreIdsToGenres
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -24,11 +25,11 @@ data class NetworkGenreContainer(
 )
 
 @JsonClass(generateAdapter = true)
-data class NetworkMovieVideoContainer(
+data class NetworkMovieTrailerContainer(
     @Json(name = "id")
     val id: Int,
     @Json(name = "results")
-    val results: List<NetworkMovieVideo>
+    val results: List<NetworkMovieTrailer>
 )
 
 @JsonClass(generateAdapter = true)
@@ -66,7 +67,7 @@ data class NetworkGenre(
 )
 
 @JsonClass(generateAdapter = true)
-data class NetworkMovieVideo(
+data class NetworkMovieTrailer(
     @Json(name = "id")
     val id: Int,
     @Json(name = "key")
@@ -80,6 +81,20 @@ data class NetworkMovieVideo(
     @Json(name = "type")
     val type: String
 )
+
+fun NetworkMovieTrailerContainer.asDomainModelMovieTrailers(): List<MovieTrailer> {
+    return results.map {
+        MovieTrailer(
+            id = it.id,
+            movieId = this.id,
+            key = it.key,
+            name = it.name,
+            site = it.site,
+            size = it.size,
+            type = it.type
+        )
+    }
+}
 
 fun NetworkMovieContainer.asDomainModelMovies(allGenres: List<Genre>): List<Movie> {
     return results.map {

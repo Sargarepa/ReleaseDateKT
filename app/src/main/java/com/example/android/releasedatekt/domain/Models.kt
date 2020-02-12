@@ -2,6 +2,7 @@ package com.example.android.releasedatekt.domain
 
 import com.example.android.releasedatekt.database.DatabaseGenre
 import com.example.android.releasedatekt.database.DatabaseMovie
+import com.example.android.releasedatekt.database.DatabaseMovieTrailer
 import com.example.android.releasedatekt.network.TMDbService.Companion.IMAGE_BASE_URL
 import com.example.android.releasedatekt.util.smartTruncate
 import java.util.*
@@ -31,10 +32,11 @@ data class Genre(
     val name: String
 )
 
-data class MovieVideo(
+data class MovieTrailer(
     val id: Int,
     val movieId: Int,
     val key: String,
+    val name: String,
     val site: String,
     val size: Int,
     val type: String
@@ -44,6 +46,20 @@ data class MoviesAndGenresWrapper(
     val movies: List<Movie>,
     val genres: List<Genre>
 )
+
+fun List<MovieTrailer>.asDatabaseModelMovieTrailers(): Array<DatabaseMovieTrailer> {
+    return map {
+        DatabaseMovieTrailer(
+            id = it.id,
+            movieId = it.movieId,
+            key = it.key,
+            name = it.name,
+            site = it.site,
+            size = it.size,
+            type = it.type
+        )
+    }.toTypedArray()
+}
 
 fun List<Movie>.asDatabaseModelMovies(page: Int): Array<DatabaseMovie> {
     return map {

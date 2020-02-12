@@ -40,7 +40,7 @@ data class DatabaseGenre constructor(
 )
 
 @Entity
-data class DatabaseMovieVideo constructor(
+data class DatabaseMovieTrailer constructor(
     @PrimaryKey
     @ColumnInfo(name = "video_id")
     val id: Int,
@@ -48,6 +48,8 @@ data class DatabaseMovieVideo constructor(
     val movieId: Int,
     @ColumnInfo(name = "key")
     val key: String,
+    @ColumnInfo(name = "name")
+    val name: String,
     @ColumnInfo(name = "site")
     val site: String,
     @ColumnInfo(name = "size")
