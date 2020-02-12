@@ -10,7 +10,10 @@ interface TrailerDao {
     fun insertAllMovieTrailers(vararg movieTrailers: DatabaseMovieTrailer)
 
     @Query("select * from databasemovietrailer where movie_id = :movieId and type = :type")
-    fun getAllMovieTrailers(movieId: Int, type: String = "Trailer"): LiveData<List<DatabaseMovieTrailer>>
+    fun getAllMovieTrailers(
+        movieId: Int,
+        type: String = "Trailer"
+    ): LiveData<List<DatabaseMovieTrailer>>
 
     @Delete
     fun deleteAllMovieTrailers(vararg trailers: DatabaseMovieTrailer)

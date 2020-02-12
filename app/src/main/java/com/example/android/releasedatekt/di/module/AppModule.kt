@@ -1,37 +1,21 @@
 package com.example.android.releasedatekt.di.module
 
-import android.content.Context
 import com.example.android.releasedatekt.database.MediaDatabase
-import com.example.android.releasedatekt.database.getDatabase
 import com.example.android.releasedatekt.network.TMDbService
-import com.example.android.releasedatekt.network.TMDbService.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 
 @Module(
     includes = [ViewModelModule::class,
-        CoreDataModule::class,
+        NetworkModule::class,
         ViewModelFactoryModule::class,
-        WorkerModule::class]
+        WorkerModule::class,
+        DatabaseModule::class]
 )
 class AppModule {
-
-    @Singleton
-    @Provides
-    fun provideRetrofitInstance(
-        moshiConverterFactory: MoshiConverterFactory, okHttpClient: OkHttpClient
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(moshiConverterFactory)
-            .build()
-    }
 
     @Singleton
     @Provides
@@ -41,11 +25,9 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideDb(context: Context) = getDatabase(context)
+    fun provideMovieDao(db: MediaDatabase) = db.movieDao
 
     @Singleton
     @Provides
-    fun provideMovieDao(db: MediaDatabase) = db.movieDao
-
-
+    fun provideTrailerDao(db: MediaDatabase) = db.trailerDao
 }
