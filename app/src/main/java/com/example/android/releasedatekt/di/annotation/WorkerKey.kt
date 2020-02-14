@@ -1,6 +1,6 @@
 package com.example.android.releasedatekt.di.annotation
 
-import androidx.lifecycle.ViewModel
+import androidx.work.CoroutineWorker
 import dagger.MapKey
 import kotlin.reflect.KClass
 
@@ -11,4 +11,4 @@ import kotlin.reflect.KClass
     AnnotationTarget.PROPERTY_SETTER
 )
 @MapKey
-annotation class ViewModelKey(val value: KClass<out ViewModel>)
+annotation class WorkerKey(val value: KClass<out CoroutineWorker>)

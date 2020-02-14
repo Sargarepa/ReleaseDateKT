@@ -2,6 +2,7 @@ package com.example.android.releasedatekt.network
 
 import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
+import com.example.android.releasedatekt.domain.MovieTrailer
 import com.example.android.releasedatekt.util.genreIdsToGenres
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -21,6 +22,14 @@ data class NetworkMovieContainer(
 data class NetworkGenreContainer(
     @Json(name = "genres")
     val genres: List<NetworkGenre>
+)
+
+@JsonClass(generateAdapter = true)
+data class NetworkMovieTrailerContainer(
+    @Json(name = "id")
+    val id: Int,
+    @Json(name = "results")
+    val results: List<NetworkMovieTrailer>
 )
 
 @JsonClass(generateAdapter = true)
@@ -51,9 +60,41 @@ data class NetworkMovie(
 
 @JsonClass(generateAdapter = true)
 data class NetworkGenre(
-    @Json(name = "id") val id: Int,
-    @Json(name = "name") val name: String
+    @Json(name = "id")
+    val id: Int,
+    @Json(name = "name")
+    val name: String
 )
+
+@JsonClass(generateAdapter = true)
+data class NetworkMovieTrailer(
+    @Json(name = "id")
+    val id: Int,
+    @Json(name = "key")
+    val key: String,
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "site")
+    val site: String,
+    @Json(name = "size")
+    val size: Int,
+    @Json(name = "type")
+    val type: String
+)
+
+fun NetworkMovieTrailerContainer.asDomainModelMovieTrailers(): List<MovieTrailer> {
+    return results.map {
+        MovieTrailer(
+            id = it.id,
+            movieId = this.id,
+            key = it.key,
+            name = it.name,
+            site = it.site,
+            size = it.size,
+            type = it.type
+        )
+    }
+}
 
 fun NetworkMovieContainer.asDomainModelMovies(allGenres: List<Genre>): List<Movie> {
     return results.map {
@@ -61,7 +102,7 @@ fun NetworkMovieContainer.asDomainModelMovies(allGenres: List<Genre>): List<Movi
             id = it.id,
             popularity = it.popularity,
             voteCount = it.voteCount,
-            posterPath = it.posterPath?:it.backdropPath,
+            posterPath = it.posterPath ?: it.backdropPath,
             language = it.language,
             title = it.title,
             genres = genreIdsToGenres(it.genreIds, allGenres),

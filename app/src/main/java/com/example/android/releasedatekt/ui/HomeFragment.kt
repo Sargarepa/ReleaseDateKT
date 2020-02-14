@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.movies.observe(this, Observer {movies ->
+        viewModel.movies.observe(this, Observer { movies ->
             movies?.apply {
                 viewModelAdapter?.submitList(movies)
             }
@@ -60,10 +60,12 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Create binding variable
-        val binding: FragmentHomeBinding = DataBindingUtil.inflate(inflater,
+        val binding: FragmentHomeBinding = DataBindingUtil.inflate(
+            inflater,
             R.layout.fragment_home,
             container,
-            false)
+            false
+        )
 
         binding.setLifecycleOwner(viewLifecycleOwner)
 
@@ -88,8 +90,8 @@ class MovieClickListener(val clickListener: (Movie) -> Unit) {
     fun onClick(movie: Movie) = clickListener(movie)
 }
 
-class HomeAdapter(val clickListener: MovieClickListener) : PagedListAdapter<Movie, MovieViewHolder>(MOVIE_COMPARATOR) {
-
+class HomeAdapter(val clickListener: MovieClickListener) :
+    PagedListAdapter<Movie, MovieViewHolder>(MOVIE_COMPARATOR) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -120,7 +122,8 @@ class HomeAdapter(val clickListener: MovieClickListener) : PagedListAdapter<Movi
     }
 }
 
-class MovieViewHolder(val viewDataBinding: MediaItemBinding) : RecyclerView.ViewHolder(viewDataBinding.root) {
+class MovieViewHolder(val viewDataBinding: MediaItemBinding) :
+    RecyclerView.ViewHolder(viewDataBinding.root) {
     companion object {
         @LayoutRes
         val LAYOUT = R.layout.media_item

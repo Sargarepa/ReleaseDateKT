@@ -5,7 +5,7 @@ import androidx.paging.DataSource
 import androidx.room.*
 
 @Dao
-interface MediaDao {
+interface MovieDao {
     @Query("select * from databasemovie")
     fun getAllMovies(): LiveData<List<DatabaseMovie>>
 
@@ -24,4 +24,10 @@ interface MediaDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllGenres(vararg genres: DatabaseGenre)
+
+    @Delete
+    fun deleteAllMovies(vararg movies: DatabaseMovie)
+
+    @Delete
+    fun deleteAllGenres(vararg genres: DatabaseGenre)
 }

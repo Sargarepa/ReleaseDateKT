@@ -1,9 +1,8 @@
 package com.example.android.releasedatekt.network
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
-
-
 
 interface TMDbService {
 
@@ -22,4 +21,10 @@ interface TMDbService {
     suspend fun getMovies(
         @Query("api_key") apiKey: String = API_KEY, @Query("page") page: Int = 1
     ): NetworkMovieContainer
+
+    @GET("/3/movie/{movie_id}/videos")
+    suspend fun getMovieVideos(
+        @Path("movie_id") id: Int,
+        @Query("api_key") apiKey: String = API_KEY
+    ): NetworkMovieTrailerContainer
 }

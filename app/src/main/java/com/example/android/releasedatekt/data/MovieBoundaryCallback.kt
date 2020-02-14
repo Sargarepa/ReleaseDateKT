@@ -5,7 +5,7 @@ import com.example.android.releasedatekt.domain.Movie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class MovieBoundaryCallback (
+class MovieBoundaryCallback(
     private val scope: CoroutineScope,
     private val block: suspend (Int) -> Unit
 ) : PagedList.BoundaryCallback<Movie>() {

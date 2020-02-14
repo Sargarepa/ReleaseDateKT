@@ -3,6 +3,7 @@ package com.example.android.releasedatekt.database
 import androidx.room.*
 import com.example.android.releasedatekt.domain.Genre
 import com.example.android.releasedatekt.domain.Movie
+import com.example.android.releasedatekt.domain.MovieTrailer
 import java.util.*
 
 @Entity
@@ -39,6 +40,25 @@ data class DatabaseGenre constructor(
     val name: String
 )
 
+@Entity
+data class DatabaseMovieTrailer constructor(
+    @PrimaryKey
+    @ColumnInfo(name = "video_id")
+    val id: Int,
+    @ColumnInfo(name = "movie_id")
+    val movieId: Int,
+    @ColumnInfo(name = "key")
+    val key: String,
+    @ColumnInfo(name = "name")
+    val name: String,
+    @ColumnInfo(name = "site")
+    val site: String,
+    @ColumnInfo(name = "size")
+    val size: Int,
+    @ColumnInfo(name = "type")
+    val type: String
+)
+
 @Entity(primaryKeys = ["movie_id", "genre_id"])
 data class DatabaseMovieGenreCrossRef(
     @ColumnInfo(name = "movie_id")
@@ -47,7 +67,7 @@ data class DatabaseMovieGenreCrossRef(
     val genreId: Int
 )
 
-data class DatabaseMovieWithGenres (
+data class DatabaseMovieWithGenres(
     @Embedded
     val databaseMovie: DatabaseMovie,
     @Relation(
@@ -58,6 +78,17 @@ data class DatabaseMovieWithGenres (
     val genres: List<DatabaseGenre>
 )
 
+fun DatabaseMovieTrailer.asDomainModelMovieTrailer(): MovieTrailer {
+    return MovieTrailer(
+        id = id,
+        movieId = movieId,
+        key = key,
+        name = name,
+        site = site,
+        size = size,
+        type = type
+    )
+}
 
 fun DatabaseMovieWithGenres.asDomainModelMovie(): Movie {
     return Movie(
@@ -78,7 +109,7 @@ fun DatabaseMovieWithGenres.asDomainModelMovie(): Movie {
 
 fun DatabaseGenre.asDomainModelGenres(): Genre {
     return Genre(
-            id = id,
-            name = name
-        )
+        id = id,
+        name = name
+    )
 }

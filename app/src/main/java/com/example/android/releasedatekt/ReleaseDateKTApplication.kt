@@ -11,8 +11,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 class ReleaseDateKTApplication : MultiDexApplication() {
+
+    @Inject
+    lateinit var workerFactory: WorkerFactory
 
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
@@ -40,6 +44,8 @@ class ReleaseDateKTApplication : MultiDexApplication() {
         val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWorker>(1, TimeUnit.DAYS)
             .setConstraints(constraints)
             .build()
+
+        WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(workerFactory).build())
 
         WorkManager.getInstance().enqueueUniquePeriodicWork(
             RefreshDataWorker.WORK_NAME,
