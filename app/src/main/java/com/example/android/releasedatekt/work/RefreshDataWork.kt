@@ -3,8 +3,8 @@ package com.example.android.releasedatekt.work
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.android.releasedatekt.data.MediaRepository
-import com.example.android.releasedatekt.database.MovieDao
+import com.example.android.releasedatekt.data.source.MediaRepository
+import com.example.android.releasedatekt.data.source.database.MovieDao
 import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Provider
@@ -24,7 +24,7 @@ class RefreshDataWorker(
         return try {
             movieDao.deleteAllMovies()
             movieDao.deleteAllGenres()
-            repository.refreshMoviesAndGenres(1)
+            repository.refreshMovies(1)
             Payload(Result.SUCCESS)
         } catch (e: HttpException) {
             Payload(Result.RETRY)

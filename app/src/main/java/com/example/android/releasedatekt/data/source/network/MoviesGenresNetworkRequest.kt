@@ -1,4 +1,4 @@
-package com.example.android.releasedatekt.network
+package com.example.android.releasedatekt.data.source.network
 
 import com.example.android.releasedatekt.domain.MoviesAndGenresWrapper
 import kotlinx.coroutines.Dispatchers

@@ -1,7 +1,7 @@
 package com.example.android.releasedatekt.di.module
 
 import android.content.Context
-import com.example.android.releasedatekt.database.getDatabase
+import com.example.android.releasedatekt.data.source.database.getDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

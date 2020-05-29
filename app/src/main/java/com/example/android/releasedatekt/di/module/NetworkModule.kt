@@ -1,7 +1,7 @@
 package com.example.android.releasedatekt.di.module
 
-import com.example.android.releasedatekt.network.DateAdapter
-import com.example.android.releasedatekt.network.TMDbService
+import com.example.android.releasedatekt.data.source.network.DateAdapter
+import com.example.android.releasedatekt.data.source.network.TMDbService
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

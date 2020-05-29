@@ -1,4 +1,4 @@
-package com.example.android.releasedatekt.database
+package com.example.android.releasedatekt.data.source.database
 
 import androidx.room.*
 import com.example.android.releasedatekt.domain.Genre
