@@ -20,14 +20,14 @@ class RefreshDataWorker(
         const val WORK_NAME = "RefreshDataWorker"
     }
 
-    override suspend fun doWork(): Payload {
+    override suspend fun doWork(): Result {
         return try {
             movieDao.deleteAllMovies()
             movieDao.deleteAllGenres()
             repository.refreshMovies(1)
-            Payload(Result.SUCCESS)
+            Result.success()
         } catch (e: HttpException) {
-            Payload(Result.RETRY)
+            Result.retry()
         }
     }
 
