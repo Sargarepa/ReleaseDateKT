@@ -1,4 +1,4 @@
-package com.example.android.releasedatekt.network
+package com.example.android.releasedatekt.data.source.network
 
 import retrofit2.http.GET
 import retrofit2.http.Path

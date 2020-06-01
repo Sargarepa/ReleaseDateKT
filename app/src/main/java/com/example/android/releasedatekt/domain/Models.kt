@@ -1,9 +1,9 @@
 package com.example.android.releasedatekt.domain
 
-import com.example.android.releasedatekt.database.DatabaseGenre
-import com.example.android.releasedatekt.database.DatabaseMovie
-import com.example.android.releasedatekt.database.DatabaseMovieTrailer
-import com.example.android.releasedatekt.network.TMDbService.Companion.IMAGE_BASE_URL
+import com.example.android.releasedatekt.data.source.database.DatabaseGenre
+import com.example.android.releasedatekt.data.source.database.DatabaseMovie
+import com.example.android.releasedatekt.data.source.database.DatabaseMovieTrailer
+import com.example.android.releasedatekt.data.source.network.TMDbService.Companion.IMAGE_BASE_URL
 import com.example.android.releasedatekt.util.smartTruncate
 import java.util.*
 

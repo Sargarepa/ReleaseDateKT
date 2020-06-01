@@ -3,8 +3,8 @@ package com.example.android.releasedatekt.work
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.android.releasedatekt.data.MediaRepository
-import com.example.android.releasedatekt.database.MovieDao
+import com.example.android.releasedatekt.data.source.DefaultMoviesRepository
+import com.example.android.releasedatekt.data.source.database.MovieDao
 import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Provider
@@ -12,7 +12,7 @@ import javax.inject.Provider
 class RefreshDataWorker(
     appContext: Context,
     params: WorkerParameters,
-    private val repository: MediaRepository,
+    private val repository: DefaultMoviesRepository,
     private val movieDao: MovieDao
 ) : CoroutineWorker(appContext, params) {
 
@@ -20,19 +20,19 @@ class RefreshDataWorker(
         const val WORK_NAME = "RefreshDataWorker"
     }
 
-    override suspend fun doWork(): Payload {
+    override suspend fun doWork(): Result {
         return try {
-            movieDao.deleteAllMovies()
-            movieDao.deleteAllGenres()
-            repository.refreshMoviesAndGenres(1)
-            Payload(Result.SUCCESS)
+            movieDao.deleteMovies()
+            movieDao.deleteGenres()
+            repository.refreshMovies(1)
+            Result.success()
         } catch (e: HttpException) {
-            Payload(Result.RETRY)
+            Result.retry()
         }
     }
 
     class Factory @Inject constructor(
-        private val repository: Provider<MediaRepository>,
+        private val repository: Provider<DefaultMoviesRepository>,
         private val movieDao: Provider<MovieDao>
     ) : ChildWorkerFactory {
         override fun create(

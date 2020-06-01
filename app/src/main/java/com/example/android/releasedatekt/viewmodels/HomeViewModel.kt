@@ -1,14 +1,14 @@
 package com.example.android.releasedatekt.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.example.android.releasedatekt.data.MediaRepository
+import com.example.android.releasedatekt.data.source.DefaultMoviesRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(private val mediaRepository: MediaRepository) :
+class HomeViewModel @Inject constructor(private val defaultMoviesRepository: DefaultMoviesRepository) :
     ViewModel() {
 
     private val viewModelJob = SupervisorJob()
@@ -17,11 +17,11 @@ class HomeViewModel @Inject constructor(private val mediaRepository: MediaReposi
 
     init {
         viewModelScope.launch {
-            mediaRepository.refreshMoviesAndGenres(1)
+            defaultMoviesRepository.refreshMovies(1)
         }
     }
 
-    val movies = mediaRepository.loadMovieResults(viewModelScope)
+    val movies = defaultMoviesRepository.getMovies(viewModelScope)
 
     override fun onCleared() {
         super.onCleared()

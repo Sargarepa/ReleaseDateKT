@@ -1,4 +1,4 @@
-package com.example.android.releasedatekt.database
+package com.example.android.releasedatekt.data.source.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
