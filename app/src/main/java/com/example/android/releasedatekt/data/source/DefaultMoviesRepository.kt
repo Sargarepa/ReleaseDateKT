@@ -7,7 +7,7 @@ import com.example.android.releasedatekt.data.source.database.DatabaseMovieGenre
 import com.example.android.releasedatekt.data.source.database.MovieDao
 import com.example.android.releasedatekt.data.source.database.asDomainModelMovie
 import com.example.android.releasedatekt.domain.*
-import com.example.android.releasedatekt.data.source.network.MoviesGenresNetworkRequest
+import com.example.android.releasedatekt.data.source.network.MovieRemoteDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,14 +15,31 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MediaRepository
+class DefaultMoviesRepository
 @Inject constructor(
     private val movieDao: MovieDao,
-    private val moviesGenresNetworkRequest: MoviesGenresNetworkRequest
+    private val movieRemoteDataSource: MovieRemoteDataSource
 ) {
 
+    fun observePagedMovies(connectivityAvailable: Boolean, coroutineScope: CoroutineScope) {
+        //TODO
+    }
+
+    fun observeLocalPagedMovies() : LiveData<PagedList<Movie>>? {
+        //TODO
+        return null
+    }
+
+    fun observeRemotePagedMovies(ioCoroutineScope: CoroutineScope) : LiveData<PagedList<Movie>>? {
+        //TODO
+        return null
+    }
+
+    //TODO
+    fun observeMovie() = null
+
     fun getMovies(scope: CoroutineScope): LiveData<PagedList<Movie>> {
-        val dataSourceFactory = movieDao.getAllMoviesWithGenres().map {
+        val dataSourceFactory = movieDao.getPagedMoviesWithGenres().map {
             it.asDomainModelMovie()
         }
 
@@ -42,7 +59,7 @@ class MediaRepository
 
     suspend fun refreshMovies(page: Int) {
         withContext(Dispatchers.IO) {
-            val moviesAndGenres = moviesGenresNetworkRequest.getMoviesAndGenres(page)
+            val moviesAndGenres = movieRemoteDataSource.getMoviesAndGenres(page)
             for (movie in moviesAndGenres.movies) {
                 for (genre in movie.genres) {
                     movieDao.insertMovieGenreCrossRef(
@@ -53,8 +70,8 @@ class MediaRepository
                     )
                 }
             }
-            movieDao.insertAllGenres(*moviesAndGenres.genres.asDatabaseModelGenres())
-            movieDao.insertAllMovies(*moviesAndGenres.movies.asDatabaseModelMovies(page))
+            movieDao.insertGenres(*moviesAndGenres.genres.asDatabaseModelGenres())
+            movieDao.insertMovies(*moviesAndGenres.movies.asDatabaseModelMovies(page))
         }
     }
 

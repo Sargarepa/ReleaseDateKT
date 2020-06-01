@@ -3,7 +3,7 @@ package com.example.android.releasedatekt.work
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.android.releasedatekt.data.source.MediaRepository
+import com.example.android.releasedatekt.data.source.DefaultMoviesRepository
 import com.example.android.releasedatekt.data.source.database.MovieDao
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -12,7 +12,7 @@ import javax.inject.Provider
 class RefreshDataWorker(
     appContext: Context,
     params: WorkerParameters,
-    private val repository: MediaRepository,
+    private val repository: DefaultMoviesRepository,
     private val movieDao: MovieDao
 ) : CoroutineWorker(appContext, params) {
 
@@ -22,8 +22,8 @@ class RefreshDataWorker(
 
     override suspend fun doWork(): Result {
         return try {
-            movieDao.deleteAllMovies()
-            movieDao.deleteAllGenres()
+            movieDao.deleteMovies()
+            movieDao.deleteGenres()
             repository.refreshMovies(1)
             Result.success()
         } catch (e: HttpException) {
@@ -32,7 +32,7 @@ class RefreshDataWorker(
     }
 
     class Factory @Inject constructor(
-        private val repository: Provider<MediaRepository>,
+        private val repository: Provider<DefaultMoviesRepository>,
         private val movieDao: Provider<MovieDao>
     ) : ChildWorkerFactory {
         override fun create(

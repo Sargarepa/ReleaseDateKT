@@ -7,27 +7,31 @@ import androidx.room.*
 @Dao
 interface MovieDao {
     @Query("select * from databasemovie")
-    fun getAllMovies(): LiveData<List<DatabaseMovie>>
+    fun getMovies(): LiveData<List<DatabaseMovie>>
 
     @Query("select * from databasegenre")
-    fun getAllGenres(): LiveData<List<DatabaseGenre>>
+    fun getGenres(): LiveData<List<DatabaseGenre>>
 
     @Transaction
     @Query("select * from databasemovie order by page asc")
-    fun getAllMoviesWithGenres(): DataSource.Factory<Int, DatabaseMovieWithGenres>
+    fun getPagedMoviesWithGenres(): DataSource.Factory<Int, DatabaseMovieWithGenres>
+
+    @Transaction
+    @Query("select * from databasemovie order by page asc")
+    fun getMoviesWithGenres(): LiveData<List<DatabaseMovieWithGenres>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovieGenreCrossRef(movieGenreCrossRef: DatabaseMovieGenreCrossRef)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllMovies(vararg movies: DatabaseMovie)
+    fun insertMovies(vararg movies: DatabaseMovie)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllGenres(vararg genres: DatabaseGenre)
+    fun insertGenres(vararg genres: DatabaseGenre)
 
     @Delete
-    fun deleteAllMovies(vararg movies: DatabaseMovie)
+    fun deleteMovies(vararg movies: DatabaseMovie)
 
     @Delete
-    fun deleteAllGenres(vararg genres: DatabaseGenre)
+    fun deleteGenres(vararg genres: DatabaseGenre)
 }

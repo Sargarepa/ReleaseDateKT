@@ -6,7 +6,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class MoviesGenresNetworkRequest @Inject constructor(private val tmDbService: TMDbService) {
+class MovieRemoteDataSource @Inject constructor(private val tmDbService: TMDbService) {
 
     suspend fun getMoviesAndGenres(page: Int): MoviesAndGenresWrapper {
         return withContext(Dispatchers.IO) {
