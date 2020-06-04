@@ -9,7 +9,7 @@ interface TMDbService {
     companion object {
         const val BASE_URL = "https://api.themoviedb.org/"
         const val API_KEY = "459e450632dfc0e39bfcc76eff02e6c4"
-        const val IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w185"
+        const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w185"
     }
 
     @GET("/3/genre/movie/list")

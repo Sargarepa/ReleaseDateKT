@@ -2,6 +2,7 @@ package com.example.android.releasedatekt.di.module
 
 import com.example.android.releasedatekt.data.source.database.MediaDatabase
 import com.example.android.releasedatekt.data.source.network.TMDbService
+import com.example.android.releasedatekt.work.CustomWorkerFactory
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

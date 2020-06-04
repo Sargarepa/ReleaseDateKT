@@ -88,6 +88,8 @@ dependencies {
     //Dagger
     implementation "com.google.dagger:dagger:$version_dagger"
     kapt "com.google.dagger:dagger-compiler:$version_dagger"
+    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$version_assisted_inject"
+    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$version_assisted_inject"
 
     // WorkManager
     implementation "android.arch.work:work-runtime-ktx:$version_work"
