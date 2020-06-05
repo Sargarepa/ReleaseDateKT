@@ -6,17 +6,15 @@ import androidx.multidex.MultiDexApplication
 import androidx.work.*
 import com.example.android.releasedatekt.di.component.AppComponent
 import com.example.android.releasedatekt.di.component.DaggerAppComponent
+import com.example.android.releasedatekt.work.CustomWorkerFactory
 import com.example.android.releasedatekt.work.RefreshDataWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 class ReleaseDateKTApplication : MultiDexApplication() {
 
-    @Inject
-    lateinit var workerFactory: WorkerFactory
 
     private val applicationScope = CoroutineScope(Dispatchers.Default)
 
@@ -44,6 +42,8 @@ class ReleaseDateKTApplication : MultiDexApplication() {
         val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWorker>(1, TimeUnit.DAYS)
             .setConstraints(constraints)
             .build()
+
+        val workerFactory: CustomWorkerFactory = appComponent.workerFactory()
 
         WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(workerFactory).build())
 

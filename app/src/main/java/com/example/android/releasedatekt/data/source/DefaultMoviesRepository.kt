@@ -25,12 +25,12 @@ class DefaultMoviesRepository
         //TODO
     }
 
-    fun observeLocalPagedMovies() : LiveData<PagedList<Movie>>? {
+    fun observeLocalPagedMovies(): LiveData<PagedList<Movie>>? {
         //TODO
         return null
     }
 
-    fun observeRemotePagedMovies(ioCoroutineScope: CoroutineScope) : LiveData<PagedList<Movie>>? {
+    fun observeRemotePagedMovies(ioCoroutineScope: CoroutineScope): LiveData<PagedList<Movie>>? {
         //TODO
         return null
     }
@@ -50,7 +50,8 @@ class DefaultMoviesRepository
             )
 
 
-        return LivePagedListBuilder(dataSourceFactory,
+        return LivePagedListBuilder(
+            dataSourceFactory,
             DATABASE_PAGE_SIZE
         )
             .setBoundaryCallback(boundaryCallback)
@@ -59,19 +60,21 @@ class DefaultMoviesRepository
 
     suspend fun refreshMovies(page: Int) {
         withContext(Dispatchers.IO) {
-            val moviesAndGenres = movieRemoteDataSource.getMoviesAndGenres(page)
-            for (movie in moviesAndGenres.movies) {
-                for (genre in movie.genres) {
-                    movieDao.insertMovieGenreCrossRef(
-                        DatabaseMovieGenreCrossRef(
-                            movie.id,
-                            genre.id
+            val moviesAndGenres = movieRemoteDataSource.getMoviesAndGenres(page).data
+            moviesAndGenres?.apply {
+                for (movie in moviesAndGenres.movies) {
+                    for (genre in movie.genres) {
+                        movieDao.insertMovieGenreCrossRef(
+                            DatabaseMovieGenreCrossRef(
+                                movie.id,
+                                genre.id
+                            )
                         )
-                    )
+                    }
                 }
+                movieDao.insertGenres(*moviesAndGenres.genres.asDatabaseModelGenres())
+                movieDao.insertMovies(*moviesAndGenres.movies.asDatabaseModelMovies(page))
             }
-            movieDao.insertGenres(*moviesAndGenres.genres.asDatabaseModelGenres())
-            movieDao.insertMovies(*moviesAndGenres.movies.asDatabaseModelMovies(page))
         }
     }
 
