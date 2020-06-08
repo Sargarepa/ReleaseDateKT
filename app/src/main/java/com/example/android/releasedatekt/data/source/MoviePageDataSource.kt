@@ -59,6 +59,7 @@ class MoviePageDataSource @Inject constructor(
                     }
                     dao.insertGenres(*response.data.genres.asDatabaseModelGenres())
                     dao.insertMovies(*response.data.movies.asDatabaseModelMovies(page))
+                    callback(response.data.movies)
                 }
             } else if (response.status == Result.Status.ERROR) {
                 postError(response.message!!)
