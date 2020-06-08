@@ -22,17 +22,23 @@ class DefaultMoviesRepository
 ) {
 
     fun observePagedMovies(connectivityAvailable: Boolean, coroutineScope: CoroutineScope) {
-        //TODO
+        if (connectivityAvailable) observeRemotePagedMovies(coroutineScope)
+        else observeLocalPagedMovies()
     }
 
     fun observeLocalPagedMovies(): LiveData<PagedList<Movie>>? {
-        //TODO
-        return null
+        val dataSourceFactory = movieDao.getPagedMoviesWithGenres().map {
+            it.asDomainModelMovie()
+        }
+        return LivePagedListBuilder(
+            dataSourceFactory,
+            MoviePageDataSourceFactory.pagedListConfig()
+        ).build()
     }
 
     fun observeRemotePagedMovies(ioCoroutineScope: CoroutineScope): LiveData<PagedList<Movie>>? {
-        //TODO
-        return null
+        val dataSourceFactory = MoviePageDataSourceFactory(movieRemoteDataSource, movieDao, ioCoroutineScope)
+        return LivePagedListBuilder(dataSourceFactory, MoviePageDataSourceFactory.pagedListConfig()).build()
     }
 
     //TODO
