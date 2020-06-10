@@ -21,12 +21,12 @@ class DefaultMoviesRepository
     private val movieRemoteDataSource: MovieRemoteDataSource
 ) {
 
-    fun observePagedMovies(connectivityAvailable: Boolean, coroutineScope: CoroutineScope) {
+    fun observePagedMovies(connectivityAvailable: Boolean, coroutineScope: CoroutineScope) =
         if (connectivityAvailable) observeRemotePagedMovies(coroutineScope)
         else observeLocalPagedMovies()
-    }
 
-    fun observeLocalPagedMovies(): LiveData<PagedList<Movie>>? {
+
+    private fun observeLocalPagedMovies(): LiveData<PagedList<Movie>>? {
         val dataSourceFactory = movieDao.getPagedMoviesWithGenres().map {
             it.asDomainModelMovie()
         }
@@ -36,33 +36,13 @@ class DefaultMoviesRepository
         ).build()
     }
 
-    fun observeRemotePagedMovies(ioCoroutineScope: CoroutineScope): LiveData<PagedList<Movie>>? {
+    private fun observeRemotePagedMovies(ioCoroutineScope: CoroutineScope): LiveData<PagedList<Movie>>? {
         val dataSourceFactory = MoviePageDataSourceFactory(movieRemoteDataSource, movieDao, ioCoroutineScope)
         return LivePagedListBuilder(dataSourceFactory, MoviePageDataSourceFactory.pagedListConfig()).build()
     }
 
     //TODO
     fun observeMovie() = null
-
-    fun getMovies(scope: CoroutineScope): LiveData<PagedList<Movie>> {
-        val dataSourceFactory = movieDao.getPagedMoviesWithGenres().map {
-            it.asDomainModelMovie()
-        }
-
-        val boundaryCallback =
-            MovieBoundaryCallback(
-                scope,
-                ::refreshMovies
-            )
-
-
-        return LivePagedListBuilder(
-            dataSourceFactory,
-            DATABASE_PAGE_SIZE
-        )
-            .setBoundaryCallback(boundaryCallback)
-            .build()
-    }
 
     suspend fun refreshMovies(page: Int) {
         withContext(Dispatchers.IO) {
@@ -84,7 +64,4 @@ class DefaultMoviesRepository
         }
     }
 
-    companion object {
-        private const val DATABASE_PAGE_SIZE = 20
-    }
 }
