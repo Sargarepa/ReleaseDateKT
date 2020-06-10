@@ -21,10 +21,10 @@ class DefaultMoviesRepository
     private val movieRemoteDataSource: MovieRemoteDataSource
 ) {
 
-    fun observePagedMovies(connectivityAvailable: Boolean, coroutineScope: CoroutineScope) {
+    fun observePagedMovies(connectivityAvailable: Boolean, coroutineScope: CoroutineScope) =
         if (connectivityAvailable) observeRemotePagedMovies(coroutineScope)
         else observeLocalPagedMovies()
-    }
+
 
     fun observeLocalPagedMovies(): LiveData<PagedList<Movie>>? {
         val dataSourceFactory = movieDao.getPagedMoviesWithGenres().map {

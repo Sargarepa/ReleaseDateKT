@@ -22,6 +22,7 @@ import com.example.android.releasedatekt.application
 import com.example.android.releasedatekt.databinding.FragmentHomeBinding
 import com.example.android.releasedatekt.databinding.MediaItemBinding
 import com.example.android.releasedatekt.domain.Movie
+import com.example.android.releasedatekt.util.ConnectivityUtil
 import com.example.android.releasedatekt.viewmodels.HomeViewModel
 import com.example.android.releasedatekt.viewmodels.ViewModelFactory
 import javax.inject.Inject
@@ -43,7 +44,8 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.movies.observe(this, Observer { movies ->
+        viewModel.connectivityAvailable = ConnectivityUtil.isConnected(context!!)
+        viewModel.movies?.observe(this, Observer { movies ->
             movies?.apply {
                 viewModelAdapter?.submitList(movies)
             }

@@ -15,13 +15,15 @@ class HomeViewModel @Inject constructor(private val defaultMoviesRepository: Def
 
     private val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+    var connectivityAvailable: Boolean = false
+
     init {
         viewModelScope.launch {
             defaultMoviesRepository.refreshMovies(1)
         }
     }
 
-    val movies = defaultMoviesRepository.getMovies(viewModelScope)
+    val movies = defaultMoviesRepository.observePagedMovies(connectivityAvailable, viewModelScope)
 
     override fun onCleared() {
         super.onCleared()
