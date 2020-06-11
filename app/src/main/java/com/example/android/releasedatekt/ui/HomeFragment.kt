@@ -7,11 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -73,8 +73,16 @@ class HomeFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        viewModelAdapter = HomeAdapter(MovieClickListener {
-            Toast.makeText(context, "${it.title} has been clicked!", Toast.LENGTH_SHORT).show()
+        viewModel.navigateToDetailsFragment.observe(this, Observer {
+            if (null != it) {
+                this.findNavController()
+                    .navigate(HomeFragmentDirections.actionHomeFragmentToDetailsFragment(it))
+                viewModel.onNavigateToDetailsFragmentComplete()
+            }
+        })
+
+        viewModelAdapter = HomeAdapter(MovieClickListener { movieId ->
+            viewModel.onMovieClicked(movieId)
         })
 
         binding.homeRecyclerView.apply {
@@ -88,8 +96,8 @@ class HomeFragment : Fragment() {
 
 }
 
-class MovieClickListener(val clickListener: (Movie) -> Unit) {
-    fun onClick(movie: Movie) = clickListener(movie)
+class MovieClickListener(val clickListener: (movieId: Int) -> Unit) {
+    fun onClick(movie: Movie) = clickListener(movie.id)
 }
 
 class HomeAdapter(val clickListener: MovieClickListener) :
