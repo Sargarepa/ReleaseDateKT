@@ -9,7 +9,7 @@ import com.squareup.moshi.JsonClass
 import java.util.*
 
 @JsonClass(generateAdapter = true)
-data class NetworkMovieContainer(
+data class NetworkMoviesContainer(
     @Json(name = "page")
     val page: Int,
     @Json(name = "total_pages")
@@ -19,7 +19,7 @@ data class NetworkMovieContainer(
 )
 
 @JsonClass(generateAdapter = true)
-data class NetworkGenreContainer(
+data class NetworkGenresContainer(
     @Json(name = "genres")
     val genres: List<NetworkGenre>
 )
@@ -96,7 +96,7 @@ fun NetworkMovieTrailerContainer.asDomainModelMovieTrailers(): List<MovieTrailer
     }
 }
 
-fun NetworkMovieContainer.asDomainModelMovies(allGenres: List<Genre>): List<Movie> {
+fun NetworkMoviesContainer.asDomainModelMovies(allGenres: List<Genre>): List<Movie> {
     return results.map {
         Movie(
             id = it.id,
@@ -114,7 +114,7 @@ fun NetworkMovieContainer.asDomainModelMovies(allGenres: List<Genre>): List<Movi
 }
 
 
-fun NetworkGenreContainer.asDomainModelGenres(): List<Genre> {
+fun NetworkGenresContainer.asDomainModelGenres(): List<Genre> {
     return genres.map {
         Genre(
             id = it.id,

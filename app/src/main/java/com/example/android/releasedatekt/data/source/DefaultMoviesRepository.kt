@@ -1,6 +1,7 @@
 package com.example.android.releasedatekt.data.source
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.android.releasedatekt.data.source.database.DatabaseMovieGenreCrossRef
@@ -19,14 +20,14 @@ class DefaultMoviesRepository
 @Inject constructor(
     private val movieDao: MovieDao,
     private val movieRemoteDataSource: MovieRemoteDataSource
-) {
+) : MoviesRepository {
 
-    fun observePagedMovies(connectivityAvailable: Boolean, coroutineScope: CoroutineScope) =
+    override fun observePagedMovies(connectivityAvailable: Boolean, coroutineScope: CoroutineScope) =
         if (connectivityAvailable) observeRemotePagedMovies(coroutineScope)
         else observeLocalPagedMovies()
 
 
-    private fun observeLocalPagedMovies(): LiveData<PagedList<Movie>>? {
+    override fun observeLocalPagedMovies(): LiveData<PagedList<Movie>>? {
         val dataSourceFactory = movieDao.getPagedMoviesWithGenres().map {
             it.asDomainModelMovie()
         }
@@ -36,15 +37,16 @@ class DefaultMoviesRepository
         ).build()
     }
 
-    private fun observeRemotePagedMovies(ioCoroutineScope: CoroutineScope): LiveData<PagedList<Movie>>? {
+    override fun observeRemotePagedMovies(ioCoroutineScope: CoroutineScope): LiveData<PagedList<Movie>>? {
         val dataSourceFactory = MoviePageDataSourceFactory(movieRemoteDataSource, movieDao, ioCoroutineScope)
         return LivePagedListBuilder(dataSourceFactory, MoviePageDataSourceFactory.pagedListConfig()).build()
     }
 
-    //TODO
-    fun observeMovie() = null
+    override fun observeMovie(id: Int) : LiveData<Movie> = Transformations.map(movieDao.getMovie(id)) {
+        it.asDomainModelMovie()
+    }
 
-    suspend fun refreshMovies(page: Int) {
+    override suspend fun refreshMovies(page: Int) {
         withContext(Dispatchers.IO) {
             val moviesAndGenres = movieRemoteDataSource.getMoviesAndGenres(page).data
             moviesAndGenres?.apply {
