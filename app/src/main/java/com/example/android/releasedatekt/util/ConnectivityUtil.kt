@@ -12,3 +12,4 @@ object ConnectivityUtil {
         return activeNetwork?.isConnectedOrConnecting == true
     }
 }
+

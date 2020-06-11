@@ -16,12 +16,18 @@ interface TMDbService {
     @GET("/3/genre/movie/list")
     suspend fun getGenres(
         @Query("api_key") api_key: String = API_KEY
-    ): Response<NetworkGenreContainer>
+    ): Response<NetworkGenresContainer>
 
     @GET("/3/discover/movie")
     suspend fun getMovies(
         @Query("api_key") apiKey: String = API_KEY, @Query("page") page: Int = 1
-    ): Response<NetworkMovieContainer>
+    ): Response<NetworkMoviesContainer>
+
+    @GET("/3/movie/{movie_id}")
+    suspend fun getMovie(
+        @Path ("movie_id") id: Int,
+        @Query("api_key") apiKey: String = API_KEY
+    ) : Response<NetworkMovie>
 
     @GET("/3/movie/{movie_id}/videos")
     suspend fun getMovieVideos(

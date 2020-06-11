@@ -12,6 +12,9 @@ interface MovieDao {
     @Query("select * from databasegenre")
     fun getGenres(): LiveData<List<DatabaseGenre>>
 
+    @Query("select * from databasemovie where movie_id = :id")
+    fun getMovie(id: Int): LiveData<DatabaseMovieWithGenres>
+
     @Transaction
     @Query("select * from databasemovie order by page asc")
     fun getPagedMoviesWithGenres(): DataSource.Factory<Int, DatabaseMovieWithGenres>
